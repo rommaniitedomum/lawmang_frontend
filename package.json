@@ -49,5 +49,5 @@
   "devDependencies": {
     "tailwindcss": "^3.4.17"
   },
-  "proxy": "http://34.205.129.55/"
+  "proxy": "https://legacyback.aicc4park.co.kr"
 }
