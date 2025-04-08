@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://legacyback.aicc4park.co.kr/api/:path*"
+    }
+  ]
+}
