@@ -48,6 +48,5 @@
   },
   "devDependencies": {
     "tailwindcss": "^3.4.17"
-  },
-  "proxy": "https://legacyback.aicc4park.co.kr"
+  }
 }
