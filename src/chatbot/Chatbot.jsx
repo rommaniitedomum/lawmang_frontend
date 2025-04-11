@@ -114,34 +114,16 @@ const Chatbot = () => {
     if (selectedCategory === "general") {
       setIsGeneralTyping(true);
 
-      let initial = null;
-
       try {
+        // ✅ LLM1 - 초기 응답 먼저 받음
         const res = await fetch("/api/chatbot/initial", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ query: userInput }),
         });
+        const initial = await res.json();
 
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder("utf-8");
-
-        let fullText = "";
-        let done = false;
-
-        while (!done) {
-          const { value, done: streamDone } = await reader.read();
-          done = streamDone;
-
-          if (value) {
-            const chunk = decoder.decode(value, { stream: true });
-            fullText += chunk;
-            console.log("🧩 수신된 조각:", chunk);
-          }
-        }
-
-        initial = JSON.parse(fullText);
-
+        // ✅ mcq 응답 바로 출력
         if (initial.mcq_question) {
           setGeneralMessages((prev) => [
             ...prev,
@@ -152,8 +134,49 @@ const Chatbot = () => {
             },
           ]);
         }
+
+        // ✅ LLM2 prepare는 백그라운드에서 실행
+        if (initial.yes_count >= 1 && initial.yes_count < 3) {
+          fetch("/api/chatbot/prepare", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query: userInput }),
+          });
+        }
+
+        // ✅ LLM2 advanced도 백그라운드에서 실행 → 응답 오면 메시지 추가
+        if (initial.yes_count >= 3) {
+          fetch("/api/chatbot/advanced", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query: userInput }),
+          })
+            .then((res) => res.json())
+            .then((adv) => {
+              const fullAnswer = `
+🚀 [고급 응답]
+📄 요약: ${adv.template?.summary}
+🧠 전략: ${adv.strategy?.final_strategy_summary}
+📚 판례: ${adv.precedent?.summary}
+🔗 링크: ${adv.precedent?.casenote_url}
+
+🤖 ${adv.final_answer}`.trim();
+
+              setGeneralMessages((prev) => [
+                ...prev,
+                {
+                  text: fullAnswer,
+                  isUser: false,
+                  timestamp: new Date().toLocaleTimeString(),
+                },
+              ]);
+            });
+        }
+
+        setIsGeneralTyping(false);
       } catch (error) {
-        console.error("❌ 스트리밍 오류:", error);
+        console.error("❌ LLM 호출 오류:", error);
+        setIsGeneralTyping(false);
         setGeneralMessages((prev) => [
           ...prev,
           {
@@ -163,42 +186,8 @@ const Chatbot = () => {
           },
         ]);
       }
-
-      try {
-        if (initial && initial.yes_count >= 3) {
-          const advRes = await fetch("/api/chatbot/advanced", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ query: userInput }),
-          });
-          const adv = await advRes.json();
-
-          const fullAnswer = `
-🚀 [고급 응답]
-📄 요약: ${adv.template?.summary}
-🧠 전략: ${adv.strategy?.final_strategy_summary}
-📚 판례: ${adv.precedent?.summary}
-🔗 링크: ${adv.precedent?.casenote_url}
-
-🤖 ${adv.final_answer}`.trim();
-
-          setGeneralMessages((prev) => [
-            ...prev,
-            {
-              text: fullAnswer,
-              isUser: false,
-              timestamp: new Date().toLocaleTimeString(),
-            },
-          ]);
-        }
-      } catch (error) {
-        console.error("❌ LLM2 오류:", error);
-      }
-
-      setIsGeneralTyping(false);
-    }
-    // ✳️ 법률용어 설명은 동일하게 유지
-    else if (selectedCategory === "legal") {
+    } else if (selectedCategory === "legal") {
+      // ✅ 법률용어 설명 로직은 동일
       setIsLegalTyping(true);
       try {
         const response = await axios.post("/api/chatbot_term/legal-term", {
