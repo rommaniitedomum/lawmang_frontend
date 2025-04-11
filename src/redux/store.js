@@ -5,7 +5,7 @@ import memoReducer from "./slices/memoSlice";
 import { memoApi } from "./slices/memoApi";
 import historyReducer from "./slices/historySlice";
 import { historyApi } from "./slices/historyApi";
-import { deepResearchApi } from "./slices/deepResearchApi";
+import { deepResearchApi } from './slices/deepResearchApi';
 
 export const store = configureStore({
   reducer: {
@@ -20,13 +20,11 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
+        // RTK Query에 대한 직렬화 검사 무시
         ignoredActions: [
-          "historyApi/executeQuery/fulfilled",
-          "memoApi/executeQuery/fulfilled",
-          "deepResearchApi/executeQuery/fulfilled",
-          `${deepResearchApi.reducerPath}/executeMutation/pending`,
-          `${deepResearchApi.reducerPath}/executeMutation/fulfilled`,
-          `${deepResearchApi.reducerPath}/executeMutation/rejected`,
+          'historyApi/executeQuery/fulfilled', 
+          'memoApi/executeQuery/fulfilled',
+          'deepResearchApi/executeQuery/fulfilled'
         ],
       },
     }).concat(

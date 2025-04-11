@@ -1,11 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import {
-  useSendEmailCodeMutation,
-  useRegisterUserMutation,
-  useVerifyEmailCodeMutation,
-  useCheckNicknameMutation,
-} from "../../redux/slices/authApi";
+import { useSendEmailCodeMutation, useRegisterUserMutation, useVerifyEmailCodeMutation, useCheckNicknameQuery } from "../../redux/slices/authApi";
 import { MdOutlinePersonOutline } from "react-icons/md";
 import { AiOutlineMail } from "react-icons/ai";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -35,11 +30,10 @@ const Signup = () => {
   });
 
   // ✅ 닉네임 중복 확인
-  const { data: nicknameData, error: nicknameErrorResponse } =
-    useCheckNicknameMutation(
-      formData.nickname,
-      { skip: !formData.nickname } // 닉네임 입력 전에는 요청하지 않음
-    );
+  const { data: nicknameData, error: nicknameErrorResponse } = useCheckNicknameQuery(
+    formData.nickname,
+    { skip: !formData.nickname } // 닉네임 입력 전에는 요청하지 않음
+  );
   // ✅ 이메일 인증 코드 요청
   const [sendEmailCode, { isLoading: isSendingCode }] =
     useSendEmailCodeMutation();
@@ -92,11 +86,9 @@ const Signup = () => {
     } catch (err) {
       console.error("인증 코드 요청 실패:", err);
       // 백엔드에서 오는 에러 메시지 형식에 따라 처리
-      if (
-        err.data?.message === "Email already exists" ||
-        err.data?.detail === "Email already exists" ||
-        err.status === 400
-      ) {
+      if (err.data?.message === "Email already exists" || 
+          err.data?.detail === "Email already exists" ||
+          err.status === 400) {
         alert("이미 가입된 이메일입니다.");
         setErrorMessage(""); // 기존 에러 메시지 제거
       } else {
@@ -191,6 +183,7 @@ const Signup = () => {
     }
   }, [nicknameData, nicknameErrorResponse]);
 
+
   return (
     <div className="min-h-screen flex items-center justify-center relative">
       {/* 단색 배경 */}
@@ -199,9 +192,7 @@ const Signup = () => {
       {/* 회원가입 폼 */}
       <div className="bg-white/50 backdrop-blur-sm p-12 rounded-lg w-[600px] mt-10 shadow-lg relative border-2 border-white/50 z-10">
         <h2 className="text-4xl text-neutral-700 text-center mb-8">회원가입</h2>
-        <form
-          className="space-y-6 mt-16"
-          onSubmit={handleSubmit}>
+        <form className="space-y-6 mt-16" onSubmit={handleSubmit}>
           {/* 이메일 입력 및 인증 코드 요청 */}
           <div className="relative">
             <span className="absolute left-3 top-4">
@@ -223,7 +214,8 @@ const Signup = () => {
                 disabled={isSendingCode || isCodeSent}
                 className={`ml-2 px-4 py-2 text-white rounded-md whitespace-nowrap w-[100px] ${
                   isCodeSent ? "bg-gray-500" : "bg-Main hover:bg-Main_hover"
-                }`}>
+                }`}
+              >
                 {isSendingCode
                   ? "전송 중..."
                   : isCodeSent
@@ -254,10 +246,9 @@ const Signup = () => {
                   onClick={handleVerifyCode}
                   disabled={isCodeVerified}
                   className={`ml-2 px-4 py-2 text-white rounded-md whitespace-nowrap w-[100px] ${
-                    isCodeVerified
-                      ? "bg-green-500"
-                      : "bg-Main hover:bg-Main_hover"
-                  }`}>
+                    isCodeVerified ? "bg-green-500" : "bg-Main hover:bg-Main_hover"
+                  }`}
+                >
                   {isCodeVerified ? "인증 완료" : "인증 확인"}
                 </button>
               </div>
@@ -282,17 +273,14 @@ const Signup = () => {
               <button
                 type="button"
                 onClick={handleCheckNickname}
-                className="ml-2 px-4 py-2 text-white rounded-md whitespace-nowrap w-[100px] bg-Main hover:bg-Main_hover">
+                className="ml-2 px-4 py-2 text-white rounded-md whitespace-nowrap w-[100px] bg-Main hover:bg-Main_hover"
+              >
                 중복 확인
               </button>
             </div>
             <div className="mt-2 text-xs">
-              {nicknameStatus === false && (
-                <p className="text-red-500 ">{nicknameError}</p>
-              )}
-              {nicknameStatus === true && (
-                <p className="text-green-600">✓ 사용 가능한 닉네임 입니다.</p>
-              )}
+            {nicknameStatus === false && <p className="text-red-500 ">{nicknameError}</p>}
+            {nicknameStatus === true && <p className="text-green-600">✓ 사용 가능한 닉네임 입니다.</p>}
             </div>
           </div>
 
@@ -361,16 +349,12 @@ const Signup = () => {
           </div>
 
           {/* 에러 메시지 */}
-          {errorMessage && (
-            <p className="text-red-500 text-center">{errorMessage}</p>
-          )}
+          {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
 
           {/* 로그인 페이지 링크 */}
           <div className="text-center text-gray-600">
             이미 계정이 있으시다면 &nbsp;
-            <Link
-              to="/login"
-              className="hover:text-gray-800 underline hover:font-bold">
+            <Link to="/login" className="hover:text-gray-800 underline hover:font-bold">
               로그인 하기
             </Link>
           </div>
@@ -379,7 +363,8 @@ const Signup = () => {
           <button
             type="submit"
             disabled={isRegistering}
-            className="w-full bg-Main text-white py-5 rounded-md hover:bg-Main_hover transition-colors text-lg">
+            className="w-full bg-Main text-white py-5 rounded-md hover:bg-Main_hover transition-colors text-lg"
+          >
             {isRegistering ? "회원가입 중..." : "회원가입"}
           </button>
         </form>
