@@ -1,5 +1,7 @@
 // front/src/components/Precedent/precedentAPI.js
 
+import { BASE_URL } from "../../redux/slices/apis";
+
 /**
  * 공통 API 요청 함수.
  * @param {string} apiUrl - 호출할 API의 URL.
@@ -45,7 +47,7 @@ async function fetchData(apiUrl, retries = 2) {
  */
 export async function fetchCasesByCategory(category) {
   if (!category) return [];
-  const apiUrl = `/api/search/precedents/category/${encodeURIComponent(category)}`;
+  const apiUrl = `${BASE_URL}/api/search/precedents/category/${encodeURIComponent(category)}`;
   return fetchData(apiUrl);
 }
 
@@ -57,7 +59,7 @@ export async function fetchCasesByCategory(category) {
 export async function fetchCases(query) {
   if (!query) return [];
   // encodeURIComponent를 사용하여 쿼리 문자열 안전 처리
-  const apiUrl = `/api/search/precedents/${encodeURIComponent(query)}`;
+  const apiUrl = `${BASE_URL}/api/search/precedents/${encodeURIComponent(query)}`;
   return fetchData(apiUrl);
 }
 
@@ -69,7 +71,7 @@ export async function fetchCases(query) {
 export async function fetchCaseDetail(pre_number) {
   if (!pre_number) throw new Error("유효한 pre_number가 필요합니다.");
 
-  const apiUrl = `/api/detail/precedent/${pre_number}`;
+  const apiUrl = `${BASE_URL}/api/detail/precedent/${pre_number}`;
   const result = await fetchData(apiUrl);
 
   if (result && typeof result === "object" && !Array.isArray(result)) {
@@ -80,7 +82,7 @@ export async function fetchCaseDetail(pre_number) {
       const htmlResult = await fetchData(htmlApiUrl);
 
       // ✅ JSON 데이터가 없으면 새로 만든 열람 목록 API에서 판례 정보 가져오기
-      const dbApiUrl = `/api/mylog/precedent-info/${pre_number}`;
+      const dbApiUrl = `${BASE_URL}/api/mylog/precedent-info/${pre_number}`;
       const dbResult = await fetchData(dbApiUrl);
 
       return {
@@ -104,7 +106,7 @@ export async function fetchCaseDetail(pre_number) {
 export async function fetchPrecedentSummary(pre_number) {
   if (!pre_number) throw new Error("유효한 pre_number가 필요합니다.");
 
-  const apiUrl = `/api/detail/precedent/summary/${pre_number}`;
+  const apiUrl = `${BASE_URL}/api/detail/precedent/summary/${pre_number}`;
   console.log(`📌 [DEBUG] API 요청: ${apiUrl}`);  // ✅ 요청 URL 확인
   const result = await fetchData(apiUrl);
   console.log(`✅ [SUCCESS] 요약 응답:`, result); // ✅ 응답 로그 확인
@@ -116,7 +118,7 @@ export async function fetchPrecedentSummary(pre_number) {
 export async function fetchPrecedentInfo(precedent_id) {
   if (!precedent_id) throw new Error("유효한 precedent_id 필요합니다.");
 
-  const apiUrl = `/api/mylog/history/precedent-info/${precedent_id}`;
+  const apiUrl = `${BASE_URL}/api/mylog/history/precedent-info/${precedent_id}`;
   // console.log("📌 요청하는 API:", apiUrl);  // ✅ 로그 추가
 
   const result = await fetchData(apiUrl);

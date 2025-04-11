@@ -1,4 +1,4 @@
-
+import { BASE_URL } from "../../redux/slices/apis";
 /**
  * 공통 API 요청 함수.
  * @param {string} apiUrl - 호출할 API의 URL.
@@ -41,7 +41,7 @@ async function fetchData(apiUrl) {
  */
 export async function fetchConsultationsByCategory(category) {
   if (!category) return [];
-  const apiUrl = `/api/search/consultations/category/${encodeURIComponent(category)}`;
+  const apiUrl = `${BASE_URL}/api/search/consultations/category/${encodeURIComponent(category)}`;
   return fetchData(apiUrl);
 }
 
@@ -53,7 +53,7 @@ export async function fetchConsultationsByCategory(category) {
 export async function fetchConsultations(query) {
   if (!query) return [];
   // encodeURIComponent를 사용하여 쿼리 문자열 안전 처리
-  const apiUrl = `/api/search/consultations/${encodeURIComponent(query)}`;
+  const apiUrl = `${BASE_URL}/api/search/consultations/${encodeURIComponent(query)}`;
   return fetchData(apiUrl);
 }
 
@@ -64,7 +64,7 @@ export async function fetchConsultations(query) {
  */
 export async function fetchConsultationDetail(consultation_id) {
   if (!consultation_id) throw new Error("유효한 consultation_id가 필요합니다.");
-  const apiUrl = `/api/detail/consultation/${consultation_id}`;
+  const apiUrl = `${BASE_URL}/api/detail/consultation/${consultation_id}`;
   return fetchData(apiUrl);
 }
 

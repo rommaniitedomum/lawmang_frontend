@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -60,6 +60,8 @@ const Consultation = () => {
     "물권",
     "상속",
   ];
+
+  const categoryContainerRef = useRef(null);
 
   useEffect(() => {
     const fromDetail = sessionStorage.getItem("fromDetail") === "true";
@@ -180,37 +182,56 @@ const Consultation = () => {
     <HighlightText text={title} highlight={searchQuery} />
   );
 
+  const scrollCategories = (direction) => {
+    if (categoryContainerRef.current) {
+      const scrollAmount = 200; // 한 번에 스크롤되는 거리
+      const currentScroll = categoryContainerRef.current.scrollLeft;
+      const newScroll =
+        direction === "left"
+          ? currentScroll - scrollAmount
+          : currentScroll + scrollAmount;
+
+      categoryContainerRef.current.scrollTo({
+        left: newScroll,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <div className="container min-h-screen">
       <div className="left-layout">
-        <div className="px-0 pt-[135px] pb-10">
+        <div className="px-0 pt-[100px] sm:pt-[135px] pb-10">
           {/* 헤더 섹션*/}
           <div className="flex items-center gap-4 mb-8">
-            <SlSpeech className="text-6xl text-Main" />
-            <h1 className="text-2xl font-medium cursor-default">상담 사례</h1>
+            <SlSpeech className="text-4xl sm:text-6xl text-Main" />
+            <h1 className="text-xl sm:text-2xl font-medium cursor-default">
+              상담 사례
+            </h1>
           </div>
 
           {/* 검색창 */}
-          <div className="relative mb-8">
+          <div className="relative mb-6 sm:mb-8">
             <div className="relative w-full max-w-[900px]">
               <input
                 type="text"
                 placeholder="궁금한 법률 상담 사례를 검색하세요..."
-                className="w-full p-4 pl-12 text-lg border border-gray-300 rounded-xl shadow-sm 
+                className="w-full p-3 sm:p-4 pl-10 sm:pl-12 text-sm sm:text-lg border border-gray-300 rounded-xl shadow-sm 
                          focus:outline-none focus:border-Main focus:ring-1 focus:ring-[#d7d5cc] 
-                          transition-colors duration-200 bg-gray-50/50 hover:bg-white"
+                          transition-colors duration-200
+                          bg-gray-50/50 hover:bg-white"
                 value={searchQuery}
                 onChange={handleSearchInputChange}
                 onKeyDown={handleKeyPress}
               />
-              <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+              <div className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5 text-gray-400"
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400"
                 >
                   <path
                     strokeLinecap="round"
@@ -220,8 +241,8 @@ const Consultation = () => {
                 </svg>
               </div>
               <button
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 px-5 py-2 
-                               text-sm text-white bg-Main hover:bg-Main_hover 
+                className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 px-3 sm:px-5 py-1 sm:py-2 
+                               text-xs sm:text-sm text-white bg-Main hover:bg-Main_hover 
                                rounded-lg transition-colors duration-200"
                 onClick={handleSearch}
               >
@@ -231,22 +252,40 @@ const Consultation = () => {
           </div>
 
           {/* 카테고리 필터 */}
-          <div className="flex gap-2 mb-10 flex-wrap w-full max-w-[900px]">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => handleCategorySelect(category)}
-                className={`px-3 py-1.5 border rounded-lg transition-colors duration-200
-                  min-w-[100px] text-center
-                  ${
-                    selectedCategory === category
-                      ? "bg-Main text-white border-Main"
-                      : "border-gray-300 hover:bg-gray-50"
-                  }`}
-              >
-                {category}
-              </button>
-            ))}
+          <div className="relative">
+            <div
+              className="flex gap-2 mb-4 sm:mb-10 overflow-x-auto sm:flex-wrap whitespace-nowrap sm:whitespace-normal pb-2 sm:pb-0 w-full max-w-[900px] scrollbar-hide"
+              ref={categoryContainerRef}
+            >
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => handleCategorySelect(category)}
+                  className={`px-2 sm:px-3 py-1.5 border rounded-lg transition-colors duration-200
+                    min-w-fit sm:min-w-[100px] text-center text-xs sm:text-sm whitespace-nowrap
+                    ${
+                      selectedCategory === category
+                        ? "bg-Main text-white border-Main"
+                        : "border-gray-300 hover:bg-gray-50"
+                    }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+            {/* 좌우 스크롤 버튼 */}
+            <button
+              onClick={() => scrollCategories("left")}
+              className="absolute left-0 top-1/2 -translate-y-2/3 bg-white/80 hover:bg-white p-1.5 rounded-full shadow-md sm:hidden"
+            >
+              <MdKeyboardArrowLeft className="w-4 h-4 text-gray-600" />
+            </button>
+            <button
+              onClick={() => scrollCategories("right")}
+              className="absolute right-0 top-1/2 -translate-y-2/3 bg-white/80 hover:bg-white p-1.5 rounded-full shadow-md sm:hidden"
+            >
+              <MdKeyboardArrowRight className="w-4 h-4 text-gray-600" />
+            </button>
           </div>
 
           {/* 카테고리 정보 */}
@@ -261,13 +300,13 @@ const Consultation = () => {
 
           {/* 로딩 및 결과 표시 */}
           {isLoading || isCategoryLoading ? (
-            <div className="flex flex-col justify-center items-center h-[400px] gap-4">
+            <div className="flex flex-col justify-center items-center h-[300px] sm:h-[400px] gap-2 sm:gap-4">
               <img
                 src={loadingGif}
                 alt="loading"
-                className="w-16 h-16 text-gray-600"
+                className="w-12 h-12 sm:w-16 sm:h-16 text-gray-600"
               />
-              <p className="text-lg text-gray-600">로딩 중...</p>
+              <p className="text-sm sm:text-lg text-gray-600">로딩 중...</p>
             </div>
           ) : currentResults && currentResults.length > 0 ? (
             <>
@@ -275,25 +314,25 @@ const Consultation = () => {
                 {currentItems.map((consultation) => (
                   <li
                     key={consultation.id}
-                    className="border border-gray-300 rounded-lg p-4 transition-all duration-200 
+                    className="border border-gray-300 rounded-lg p-3 sm:p-4 transition-all duration-200 
                                hover:border-gray-200 hover:shadow-md hover:bg-gray-50 
                                hover:translate-x-1 group cursor-pointer"
                   >
                     <Link
                       to={`/consultation/detail/${consultation.id}`}
-                      className="flex flex-col sm:flex-row sm:justify-between gap-2"
+                      className="flex flex-col sm:flex-row sm:justify-between gap-1 sm:gap-2"
                     >
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-lg font-medium mb-2 sm:mb-4 line-clamp-2">
+                        <h3 className="text-sm sm:text-lg font-medium mb-1 sm:mb-4 line-clamp-2">
                           {renderTitle(consultation.title)}
                         </h3>
-                        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+                        <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3 line-clamp-2">
                           <HighlightText
                             text={consultation.question}
                             highlight={searchQuery}
                           />
                         </p>
-                        <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-1 sm:gap-0 text-sm text-gray-500">
+                        <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-center gap-1 sm:gap-0 text-xs sm:text-sm text-gray-500">
                           <span>
                             <HighlightText
                               text={consultation.category}
@@ -384,14 +423,14 @@ const Consultation = () => {
               )}
             </>
           ) : searchQuery.trim() || selectedCategory !== "all" ? (
-            <div className="flex justify-center items-center h-[400px]">
-              <p className="text-lg text-gray-400">
+            <div className="flex justify-center items-center h-[200px] sm:h-[400px]">
+              <p className="text-sm sm:text-lg text-gray-400">
                 해당하는 상담사례가 없습니다.
               </p>
             </div>
           ) : (
-            <div className="flex justify-center items-center h-[400px]">
-              <p className="text-lg text-gray-400">
+            <div className="flex justify-center items-center h-[300px] sm:h-[400px]">
+              <p className="text-sm sm:text-lg text-gray-400">
                 검색어를 입력하거나 카테고리를 선택해주세요.
               </p>
             </div>

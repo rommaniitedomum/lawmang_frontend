@@ -40,6 +40,14 @@ const LegalResearchForm = ({ setIsLoading }) => {
           input[type="date"]::-webkit-calendar-picker-indicator {
             cursor: pointer;
           }
+          input[type="date"] {
+            font-size: 14px;
+          }
+          @media (min-width: 768px) {
+            input[type="date"] {
+              font-size: 16px;
+            }
+          }
           @keyframes spin {
             from { transform: rotate(360deg); }
             to { transform: rotate(0deg); }
@@ -50,9 +58,9 @@ const LegalResearchForm = ({ setIsLoading }) => {
         `}
       </style>
       <div className="w-full max-w-3xl mx-auto">
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
           <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">
+            <label className="block text-sm md:text-lg font-medium text-gray-700 mb-1 md:mb-2">
               사건 유형
             </label>
             <input
@@ -61,14 +69,14 @@ const LegalResearchForm = ({ setIsLoading }) => {
               onChange={(e) =>
                 setFormData({ ...formData, case_type: e.target.value })
               }
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main"
+              className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main placeholder:text-sm md:placeholder:text-base bg-gray-50/50 hover:bg-white"
               placeholder="예: 임대차 분쟁, 손해배상 등"
               required
             />
           </div>
 
           <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">
+            <label className="block text-sm md:text-lg font-medium text-gray-700 mb-1 md:mb-2">
               사건 발생 시점
             </label>
             <input
@@ -78,13 +86,13 @@ const LegalResearchForm = ({ setIsLoading }) => {
                 setFormData({ ...formData, incident_date: e.target.value })
               }
               max={new Date().toISOString().split("T")[0]}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main "
+              className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main text-sm md:text-base bg-gray-50/50 hover:bg-white"
               required
             />
           </div>
 
           <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">
+            <label className="block text-sm md:text-lg font-medium text-gray-700 mb-1 md:mb-2">
               관련자
             </label>
             <input
@@ -93,14 +101,14 @@ const LegalResearchForm = ({ setIsLoading }) => {
               onChange={(e) =>
                 setFormData({ ...formData, related_party: e.target.value })
               }
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main"
+              className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main placeholder:text-sm md:placeholder:text-base bg-gray-50/50 hover:bg-white"
               placeholder="예: 건물주, 거래처 등"
               required
             />
           </div>
 
           <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">
+            <label className="block text-sm md:text-lg font-medium text-gray-700 mb-1 md:mb-2">
               사실관계
             </label>
             <textarea
@@ -108,14 +116,14 @@ const LegalResearchForm = ({ setIsLoading }) => {
               onChange={(e) =>
                 setFormData({ ...formData, fact_details: e.target.value })
               }
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main h-32 resize-none"
+              className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main h-24 md:h-32 resize-none placeholder:text-sm md:placeholder:text-base bg-gray-50/50 hover:bg-white"
               placeholder="사건의 경위를 상세히 설명해주세요"
               required
             />
           </div>
 
           <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">
+            <label className="block text-sm md:text-lg font-medium text-gray-700 mb-1 md:mb-2">
               확보한 증거
             </label>
             <input
@@ -124,14 +132,14 @@ const LegalResearchForm = ({ setIsLoading }) => {
               onChange={(e) =>
                 setFormData({ ...formData, evidence: e.target.value })
               }
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main"
+              className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main placeholder:text-sm md:placeholder:text-base bg-gray-50/50 hover:bg-white"
               placeholder="예: 계약서, 영수증, 녹취록 등"
               required
             />
           </div>
 
           <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">
+            <label className="block text-sm md:text-lg font-medium text-gray-700 mb-1 md:mb-2">
               기존 대응 여부
             </label>
             <input
@@ -140,14 +148,14 @@ const LegalResearchForm = ({ setIsLoading }) => {
               onChange={(e) =>
                 setFormData({ ...formData, prior_action: e.target.value })
               }
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main"
+              className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main placeholder:text-sm md:placeholder:text-base bg-gray-50/50 hover:bg-white"
               placeholder="예: 내용증명 발송, 유선상 합의 시도 등"
               required
             />
           </div>
 
           <div>
-            <label className="block text-lg font-medium text-gray-700 mb-2">
+            <label className="block text-sm md:text-lg font-medium text-gray-700 mb-1 md:mb-2">
               원하는 해결 방향
             </label>
             <input
@@ -156,7 +164,7 @@ const LegalResearchForm = ({ setIsLoading }) => {
               onChange={(e) =>
                 setFormData({ ...formData, desired_result: e.target.value })
               }
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main"
+              className="w-full p-2 md:p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-Main placeholder:text-sm md:placeholder:text-base bg-gray-50/50 hover:bg-white"
               placeholder="예: 보증금 전액 반환, 손해배상 등"
               required
             />
@@ -166,7 +174,7 @@ const LegalResearchForm = ({ setIsLoading }) => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full p-4 text-white rounded-lg transition-colors ${
+              className={`w-full p-3 md:p-4 text-white rounded-lg transition-colors ${
                 isLoading
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-Main hover:bg-Main_hover"
@@ -174,14 +182,14 @@ const LegalResearchForm = ({ setIsLoading }) => {
             >
               {isLoading ? "분석 중..." : "법률 검토 요청"}
             </button>
-            <div className="flex items-center justify-center gap-2 mt-8">
+            <div className="flex items-center justify-center gap-2 mt-4 md:mt-8">
               {isLoading ? (
                 <>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-xs md:text-sm text-gray-500">
                     약 1~2분 정도의 시간이 소요될 수 있습니다.
                   </p>
                   <svg
-                    className="w-5 h-5 text-Main loading-icon"
+                    className="w-4 h-4 md:w-5 md:h-5 text-Main loading-icon"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -197,7 +205,7 @@ const LegalResearchForm = ({ setIsLoading }) => {
               ) : result ? (
                 <>
                   <svg
-                    className="w-5 h-5 text-green-500"
+                    className="w-4 h-4 md:w-5 md:h-5 text-green-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -209,7 +217,7 @@ const LegalResearchForm = ({ setIsLoading }) => {
                       d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  <p className="text-sm font-semibold text-gray-700">
+                  <p className="text-xs md:text-sm font-semibold text-gray-700">
                     작성이 완료되었습니다! 아래의 내용을 확인해주세요.
                   </p>
                 </>
@@ -220,16 +228,26 @@ const LegalResearchForm = ({ setIsLoading }) => {
       </div>
 
       {result && (
-        <div className="w-full max-w-4xl mx-auto bg-gray-50 rounded-lg p-8 shadow-lg">
-          <div ref={reportRef} style={pdfStyles.container}>
+        <div className="w-[95%] sm:w-full max-w-4xl mx-auto bg-gray-50 rounded-lg p-4 sm:p-8 shadow-lg">
+          <div
+            ref={reportRef}
+            className="sm:bg-white sm:p-8 sm:rounded-lg"
+            style={{
+              ...pdfStyles.container,
+              margin: 0,
+              padding: 0,
+              backgroundColor: "transparent",
+              maxWidth: "none",
+            }}
+          >
             {/* 제목 + 버튼 */}
-            <div className="flex justify-between items-center">
-              <h2 style={{ ...pdfStyles.title, fontSize: "26px" }}>
+            <div className="flex flex-col sm:flex-row justify-between items-center sm:items-center gap-4 sm:gap-0 mb-4 sm:mb-2">
+              <h2 className="text-md sm:text-2xl font-bold text-center sm:text-left w-full sm:w-auto">
                 📄 법률 검토 보고서
               </h2>
               <button
                 onClick={() => generateLegalPDF(formData, result)}
-                className="px-4 py-2 bg-Main text-white rounded-lg pdf-download-btn"
+                className="w-full sm:w-auto px-3 sm:px-4 py-2 sm:py-2 bg-Main text-white rounded-lg pdf-download-btn text-sm sm:text-base"
               >
                 PDF 다운로드
               </button>
@@ -237,10 +255,10 @@ const LegalResearchForm = ({ setIsLoading }) => {
 
             {/* 정보란 */}
             <div
+              className="text-xs sm:text-sm"
               style={{
-                fontSize: "14px",
                 lineHeight: "1.6",
-                marginBottom: "16px",
+                marginBottom: "12px",
               }}
             >
               <p>작성일시: {result.timestamp}</p>
@@ -249,12 +267,12 @@ const LegalResearchForm = ({ setIsLoading }) => {
               <p>관련자: {formData.related_party}</p>
             </div>
 
-            <hr className="my-4 border-gray-300" />
+            <hr className="my-3 sm:my-4 border-gray-300" />
 
             {/* 본문 */}
             <div
+              className="text-sm sm:text-base"
               style={{
-                fontSize: "15px",
                 lineHeight: "1.8",
                 whiteSpace: "pre-wrap",
               }}

@@ -4,6 +4,10 @@ import documentStructure from "../../constants/document_structure.json";
 import PreviewModal from "./PreviewModal";
 import DocumentSection from "./DocumentSection";
 import { LuFileSearch } from "react-icons/lu";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import React from "react";
+import { Link } from "react-router-dom";
+import HighlightText from "../HighlightText";
 
 const categoryMapping = {
   all: "전체",
@@ -39,6 +43,9 @@ const Template = () => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchTrigger, setSearchTrigger] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const [maxScroll, setMaxScroll] = useState(0);
+  const categoryContainerRef = React.useRef(null);
 
   // 선택된 카테고리 설정
   useEffect(() => {
@@ -93,18 +100,56 @@ const Template = () => {
     return { [selectedCategory]: documentStructure[selectedCategory] };
   };
 
+  // 카테고리 스크롤 관련 함수들
+  const scrollLeft = () => {
+    if (categoryContainerRef.current) {
+      const newPosition = Math.max(0, scrollPosition - 200);
+      categoryContainerRef.current.scrollTo({
+        left: newPosition,
+        behavior: "smooth",
+      });
+      setScrollPosition(newPosition);
+    }
+  };
+
+  const scrollRight = () => {
+    if (categoryContainerRef.current) {
+      const newPosition = Math.min(maxScroll, scrollPosition + 200);
+      categoryContainerRef.current.scrollTo({
+        left: newPosition,
+        behavior: "smooth",
+      });
+      setScrollPosition(newPosition);
+    }
+  };
+
+  useEffect(() => {
+    if (categoryContainerRef.current) {
+      const updateMaxScroll = () => {
+        const container = categoryContainerRef.current;
+        setMaxScroll(container.scrollWidth - container.clientWidth);
+      };
+
+      updateMaxScroll();
+      window.addEventListener("resize", updateMaxScroll);
+      return () => window.removeEventListener("resize", updateMaxScroll);
+    }
+  }, []);
+
   return (
     <div className="container min-h-screen">
       <div className="left-layout">
-        <div className="px-0 pt-[135px] pb-10">
+        <div className="px-0 pt-[100px] sm:pt-[135px] pb-10">
           {/* 헤더 섹션 추가 */}
-          <div className="flex items-center gap-4 mb-8">
-            <LuFileSearch className="text-6xl text-Main" />
-            <h1 className="text-2xl font-medium cursor-default">법률 서식</h1>
+          <div className="flex items-center gap-2 sm:gap-4 mb-6 sm:mb-8">
+            <LuFileSearch className="text-4xl sm:text-6xl text-Main" />
+            <h1 className="text-xl sm:text-2xl font-medium cursor-default">
+              법률 서식
+            </h1>
           </div>
 
           {/* 검색바 */}
-          <div className="relative mb-8">
+          <div className="relative mb-6 sm:mb-8">
             <div className="relative w-full max-w-[900px]">
               <input
                 type="text"
@@ -112,19 +157,19 @@ const Template = () => {
                 value={searchQuery}
                 onChange={handleSearchChange}
                 onKeyDown={handleKeyPress}
-                className="w-full p-4 pl-12 text-lg border border-gray-300 rounded-xl shadow-sm 
+                className="w-full p-3 sm:p-4 pl-10 sm:pl-12 text-sm sm:text-lg border border-gray-300 rounded-xl shadow-sm 
                          focus:outline-none focus:border-Main focus:ring-1 focus:ring-[#d7d5cc] 
                           transition-colors duration-200
                           bg-gray-50/50 hover:bg-white"
               />
-              <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+              <div className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5 text-gray-400"
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400"
                 >
                   <path
                     strokeLinecap="round"
@@ -135,8 +180,8 @@ const Template = () => {
               </div>
               <button
                 onClick={handleSearch}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 px-5 py-2 
-                               text-sm text-white bg-Main hover:bg-Main_hover 
+                className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 px-3 sm:px-5 py-1.5 sm:py-2 
+                               text-xs sm:text-sm text-white bg-Main hover:bg-Main_hover 
                                rounded-lg transition-colors duration-200"
               >
                 검색
@@ -145,22 +190,45 @@ const Template = () => {
           </div>
 
           {/* 카테고리 버튼 그룹 */}
-          <div className="flex gap-2 mb-10 flex-wrap w-full max-w-[900px] justify-between">
-            {Object.entries(categoryMapping).map(([key, value]) => (
+          <div className="relative mb-6 sm:mb-10 w-full max-w-[900px]">
+            <div className="flex items-center gap-2">
               <button
-                key={key}
-                onClick={() => handleCategoryClick(key)}
-                className={`px-3 py-1.5 border rounded-lg transition-colors duration-200
-                  min-w-[100px] text-center
-                  ${
-                    selectedCategory === key
-                      ? "bg-Main text-white border-Main"
-                      : "border-gray-300 hover:bg-gray-50"
-                  }`}
+                onClick={scrollLeft}
+                className="absolute left-0 top-1/2 -translate-y-2/3 bg-white/80 hover:bg-white p-1 rounded-full shadow-md sm:hidden "
               >
-                {value}
+                <IoIosArrowBack className="w-4 h-4 text-gray-600" />
               </button>
-            ))}
+              <div
+                ref={categoryContainerRef}
+                className="flex-1 overflow-x-auto scrollbar-hide sm:overflow-visible "
+                style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+              >
+                <div className="flex gap-1.5 sm:gap-2 whitespace-nowrap sm:flex-wrap sm:whitespace-normal">
+                  {Object.entries(categoryMapping).map(([key, value]) => (
+                    <button
+                      key={key}
+                      onClick={() => handleCategoryClick(key)}
+                      className={`px-2 sm:px-3 py-1.5 border rounded-lg transition-colors duration-200
+                        min-w-fit sm:min-w-[100px] text-center text-xs sm:text-sm
+                        whitespace-nowrap
+                        ${
+                          selectedCategory === key
+                            ? "bg-Main text-white border-Main"
+                            : "border-gray-300 hover:bg-gray-50"
+                        }`}
+                    >
+                      {value}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <button
+                onClick={scrollRight}
+                className="absolute right-0 top-1/2 -translate-y-2/3 bg-white/80 hover:bg-white p-1 rounded-full shadow-md sm:hidden"
+              >
+                <IoIosArrowForward className="w-4 h-4 text-gray-600" />
+              </button>
+            </div>
           </div>
 
           {/* DocumentSection에 searchQuery 전달 */}

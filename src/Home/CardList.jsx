@@ -5,7 +5,7 @@ import Cardnewsdata from "../constants/cardnewsdata";
 
 const CardList = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = 4;
+  const cardsPerPage = window.innerWidth < 640 ? 2 : 4;
 
   // 애니메이션을 위한 state와 ref 추가
   const [isVisible, setIsVisible] = useState(false);
@@ -34,6 +34,20 @@ const CardList = () => {
       }
     };
   }, []);
+
+  // 화면 크기 변경 감지
+  useEffect(() => {
+    const handleResize = () => {
+      setCurrentPage(1); // 화면 크기 변경시 첫 페이지로
+      const newCardsPerPage = window.innerWidth < 640 ? 2 : 4;
+      if (cardsPerPage !== newCardsPerPage) {
+        window.location.reload();
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [cardsPerPage]);
 
   // 카드뉴스 데이터에서 미리보기용 정보 추출
   const cardPreviews = Cardnewsdata.map((card) => ({
@@ -69,11 +83,11 @@ const CardList = () => {
       <div className="left-layout">
         <div className="2xl:ml-[-130px] xl:ml-0 lg:ml-[50px]">
           <div className="flex items-center gap-4 ml-[10px]">
-            <ImNewspaper className="text-6xl text-blue-500" />
-            <p className="text-2xl font-medium">법률 카드뉴스</p>
+            <ImNewspaper className="text-4xl sm:text-6xl text-blue-500" />
+            <p className="text-xl sm:text-2xl font-medium">법률 카드뉴스</p>
           </div>
 
-          <ul className="grid grid-cols-2 gap-4 mt-5 w-[90%] ml-[10px]">
+          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-5 w-[90%] ml-[10px]">
             {currentCards.map((card) => (
               <li key={card.id} className="w-full p-1">
                 <Link to={`/cardnews/${card.id}`} className="block h-full">
@@ -83,14 +97,16 @@ const CardList = () => {
                       className="absolute inset-[-2px] rounded-lg bg-gray-500 transition-all duration-200 ease-out 
                       [clip-path:polygon(0_0,0_0,0_0,0_0)] group-hover:[clip-path:polygon(0_0,100%_0,100%_100%,0_100%)]"
                     ></div>
-                    <div className="relative bg-white rounded-lg p-6 h-[200px] border border-gray-300 flex flex-col justify-between">
-                      <h3 className="text-lg font-bold mb-3 text-gray-900">
+                    <div className="relative bg-white rounded-lg p-4 sm:p-6 h-[150px] sm:h-[200px] border border-gray-300 flex flex-col justify-between">
+                      <h3 className="text-lg font-bold mb-1 sm:mb-3 text-gray-900 whitespace-nowrap overflow-hidden text-ellipsis">
                         {card.title.length > 20
                           ? card.title.substring(0, 20) + "..."
                           : card.title}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-3">{card.date}</p>
-                      <p className="text-sm text-gray-700 line-clamp-4">
+                      <p className="text-sm text-gray-600 mb-1 sm:mb-3 whitespace-nowrap overflow-hidden text-ellipsis">
+                        {card.date}
+                      </p>
+                      <p className="text-sm text-gray-700 line-clamp-3 sm:line-clamp-4 break-words whitespace-pre-wrap">
                         {card.preview}
                       </p>
                     </div>

@@ -123,30 +123,30 @@ const ViewedList = ({ viewedLogs = [], isLoading, error }) => {
   return (
     <>
       <div className="border border-gray-300 rounded-lg bg-[#f5f4f2] overflow-hidden">
-        <div className="border-b border-gray-300 p-2 flex items-center bg-[#a7a28f]">
-          <div className="flex items-center gap-4 ml-4 w-[100px]">
+        <div className="border-b border-gray-300 p-1 sm:p-2 flex items-center bg-[#a7a28f]">
+          <div className="flex items-center gap-2 sm:gap-4 ml-2 sm:ml-4 w-[80px] sm:w-[100px]">
             <button
               onClick={() =>
                 setSortOrder(sortOrder === "latest" ? "oldest" : "latest")
               }
-              className="flex items-center gap-2 px-3 py-1.5 text-sm text-white opacity-80 hover:opacity-100 transition-all"
+              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-sm text-white opacity-80 hover:opacity-100 transition-all"
             >
               <FaExchangeAlt
-                className={`transition-transform duration-300 ${
+                className={`w-3 h-3 sm:w-4 sm:h-4 transition-transform duration-300 ${
                   sortOrder === "oldest" ? "rotate-180" : ""
                 }`}
               />
-              <span className="font-medium w-[60px]">
+              <span className="font-medium w-[40px] sm:w-[60px]">
                 {sortOrder === "latest" ? "최신순" : "오래된순"}
               </span>
             </button>
           </div>
 
-          <h2 className="font-medium text-white text-center flex-1 text-sm sm:text-base -ml-20">
+          <h2 className="font-medium text-white text-center flex-1 text-xs sm:text-base -ml-10 sm:-ml-20">
             열람목록
           </h2>
 
-          <div className="flex items-center gap-4 mr-4">
+          <div className="flex items-center gap-2 sm:gap-4 mr-2 sm:mr-4">
             <button
               onClick={handleDeleteAll}
               className="flex items-center gap-1 text-white hover:text-red-500"
@@ -157,7 +157,7 @@ const ViewedList = ({ viewedLogs = [], isLoading, error }) => {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-5 h-5"
+                className="w-4 h-4 sm:w-5 sm:h-5"
               >
                 <path
                   strokeLinecap="round"
@@ -165,24 +165,24 @@ const ViewedList = ({ viewedLogs = [], isLoading, error }) => {
                   d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
                 />
               </svg>
-              <span className="text-sm">전체삭제</span>
+              <span className="text-[10px] sm:text-sm">전체삭제</span>
             </button>
           </div>
         </div>
 
-        <div className="h-[250px] px-4 pt-1 pb-4 overflow-y-auto viewed-logs-container">
+        <div className="h-[200px] sm:h-[250px] px-2 sm:px-4 pt-1 pb-2 sm:pb-4 overflow-y-auto viewed-logs-container">
           {viewedLogsLoading ? (
-            <div className="col-span-4 text-center text-gray-500 mt-[100px]">
+            <div className="col-span-4 text-center text-gray-500 mt-[80px] sm:mt-[100px] text-sm sm:text-base">
               로딩 중...
             </div>
           ) : viewedLogsError ? (
-            <div className="col-span-4 text-center text-red-500 mt-[150px]">
+            <div className="col-span-4 text-center text-red-500 mt-[120px] sm:mt-[150px] text-sm sm:text-base">
               {viewedLogsError.status === 404
                 ? "열람 기록이 없습니다."
                 : "오류가 발생했습니다."}
             </div>
           ) : filteredLogs.length === 0 ? (
-            <p className="text-center text-gray-500 mt-[100px]">
+            <p className="text-center text-gray-500 mt-[80px] sm:mt-[100px] text-sm sm:text-base">
               열람한 기록이 없습니다.
             </p>
           ) : (
@@ -211,8 +211,8 @@ const ViewedList = ({ viewedLogs = [], isLoading, error }) => {
                     e.stopPropagation();
                     handleDelete(log.id);
                   }}
-                  className="absolute top-2 right-2 opacity-0 group-hover:opacity-100
-                            transition-all duration-200 p-1.5 hover:bg-gray-100
+                  className="absolute top-1 sm:top-2 right-1 sm:right-2 opacity-0 group-hover:opacity-100
+                            transition-all duration-200 p-1 sm:p-1.5 hover:bg-gray-100
                             rounded-full text-gray-500 hover:text-red-500
                             z-10"
                 >
@@ -222,7 +222,7 @@ const ViewedList = ({ viewedLogs = [], isLoading, error }) => {
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
-                    className="w-4 h-4"
+                    className="w-3 h-3 sm:w-4 sm:h-4"
                   >
                     <path
                       strokeLinecap="round"
