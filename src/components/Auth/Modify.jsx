@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useGetCurrentUserQuery,
   useUpdateUserMutation,
-  useCheckNicknameQuery,
+  useCheckNicknameMutation,
   useVerifyCurrentPasswordMutation,
   useDeleteUserMutation,
 } from "../../redux/slices/authApi";
@@ -37,7 +37,7 @@ const Modify = () => {
     confirmNewPassword: "",
   });
 
-  const { data: nicknameData } = useCheckNicknameQuery(formData.nickname, {
+  const { data: nicknameData } = useCheckNicknameMutation(formData.nickname, {
     skip: !formData.nickname || formData.nickname === user?.nickname,
   });
 
@@ -237,7 +237,9 @@ const Modify = () => {
           회원정보 수정
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-8 mt-16">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-8 mt-16">
           {/* 이메일 (수정 불가능) */}
           <div className="relative">
             <span className="absolute left-3 top-4">
@@ -269,8 +271,7 @@ const Modify = () => {
               <button
                 type="button"
                 onClick={handleCheckNickname}
-                className="ml-2 px-4 py-2 text-white rounded-md whitespace-nowrap w-[100px] bg-Main hover:bg-Main_hover"
-              >
+                className="ml-2 px-4 py-2 text-white rounded-md whitespace-nowrap w-[100px] bg-Main hover:bg-Main_hover">
                 중복 확인
               </button>
             </div>
@@ -306,8 +307,7 @@ const Modify = () => {
                   currentPasswordVerified
                     ? "bg-green-500"
                     : "bg-Main hover:bg-Main_hover"
-                }`}
-              >
+                }`}>
                 {currentPasswordVerified ? "확인 완료" : "확인"}
               </button>
             </div>
@@ -409,8 +409,7 @@ const Modify = () => {
             <button
               type="submit"
               disabled={isUpdating}
-              className="w-full bg-Main text-white py-5 rounded-md hover:bg-Main_hover transition-colors text-lg"
-            >
+              className="w-full bg-Main text-white py-5 rounded-md hover:bg-Main_hover transition-colors text-lg">
               {isUpdating ? "수정 중..." : "회원정보 수정하기"}
             </button>
           </div>
@@ -420,8 +419,7 @@ const Modify = () => {
         <div className="mt-8 text-center">
           <button
             onClick={handleWithdraw}
-            className="text-red-500 hover:text-red-700 text-sm underline"
-          >
+            className="text-red-500 hover:text-red-700 text-sm underline">
             회원탈퇴
           </button>
         </div>

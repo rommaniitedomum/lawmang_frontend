@@ -4,18 +4,18 @@ import { BASE_URL } from "./apis";
 
 export const authApi = createApi({
   reducerPath: "authApi",
-  baseQuery: fetchBaseQuery({ 
+  baseQuery: fetchBaseQuery({
     baseUrl: `${BASE_URL}/api`,
-    credentials: 'include',  // 쿠키 포함
+    credentials: "include", // 쿠키 포함
     prepareHeaders: (headers) => {
       const token = document.cookie.match(/access_token=(.*?)(;|$)/)?.[1];
       if (token) {
-        headers.set('Authorization', `Bearer ${token}`);
+        headers.set("Authorization", `Bearer ${token}`);
       }
       return headers;
     },
   }),
-  tagTypes: ['User'], // 캐시 태그 추가
+  tagTypes: ["User"], // 캐시 태그 추가
   endpoints: (builder) => ({
     // ✅ 이메일 인증 코드 요청 API
     sendEmailCode: builder.mutation({
@@ -29,9 +29,9 @@ export const authApi = createApi({
     // ✅ 닉네임 중복 확인 API
     checkNickname: builder.mutation({
       query: ({ nickname }) => ({
-          url: `/auth/check-nickname`,
-          params: { nickname },
-          method: 'GET'
+        url: `/auth/check-nickname`,
+        params: { nickname },
+        method: "GET",
       }),
       keepUnusedDataFor: 0,
     }),
@@ -73,7 +73,7 @@ export const authApi = createApi({
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
-      providesTags: ['User'], // 이 쿼리가 User 태그를 제공
+      providesTags: ["User"], // 이 쿼리가 User 태그를 제공
     }),
 
     // ✅ 회원정보 수정 API 추가
@@ -87,23 +87,23 @@ export const authApi = createApi({
           Authorization: `Bearer ${localStorage.getItem("token")}`, // ✅ 인증 토큰 추가
         },
       }),
-      invalidatesTags: ['User'], // User 태그를 무효화하여 getCurrentUser를 다시 호출하도록 함
+      invalidatesTags: ["User"], // User 태그를 무효화하여 getCurrentUser를 다시 호출하도록 함
     }),
 
     // ✅ 이메일 인증 코드 확인 엔드포인트 추가
     verifyEmailCode: builder.mutation({
       query: (data) => ({
         url: `/auth/verify-email`,
-        method: 'POST',
+        method: "POST",
         body: data,
       }),
     }),
-    
+
     // ✅ 비밀번호 재설정 코드 요청 API
     sendResetCode: builder.mutation({
       query: (data) => ({
         url: `/auth/send-reset-code`,
-        method: 'POST',
+        method: "POST",
         body: data,
       }),
     }),
@@ -112,7 +112,7 @@ export const authApi = createApi({
     verifyResetCode: builder.mutation({
       query: (data) => ({
         url: `/auth/verify-reset-code`,
-        method: 'POST',
+        method: "POST",
         body: data,
       }),
     }),
@@ -121,7 +121,7 @@ export const authApi = createApi({
     resetPassword: builder.mutation({
       query: (data) => ({
         url: `/auth/reset-password`,
-        method: 'POST',
+        method: "POST",
         body: data,
       }),
     }),
@@ -152,31 +152,30 @@ export const authApi = createApi({
     deleteUser: builder.mutation({
       query: () => ({
         url: `/auth/withdraw`,
-        method: 'DELETE',
-        credentials: 'include',
+        method: "DELETE",
+        credentials: "include",
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       }),
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
-          console.log('회원탈퇴 요청 시작');
+          console.log("회원탈퇴 요청 시작");
           await queryFulfilled;
-          console.log('회원탈퇴 응답 성공');
-          
+          console.log("회원탈퇴 응답 성공");
+
           // ✅ Redux 상태 초기화
           dispatch(logout());
-    
+
           // ✅ localStorage에서 사용자 정보 삭제
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-    
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
         } catch (err) {
-          console.error('회원탈퇴 실패:', err);
+          console.error("회원탈퇴 실패:", err);
         }
       },
-      invalidatesTags: ['User'], // ✅ User 태그 무효화 -> getCurrentUser 다시 호출
+      invalidatesTags: ["User"], // ✅ User 태그 무효화 -> getCurrentUser 다시 호출
     }),
   }),
 });
