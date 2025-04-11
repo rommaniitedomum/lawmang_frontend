@@ -120,16 +120,8 @@ const Detail = () => {
         <div className="left-layout">
           <div className="px-0 pt-32 pb-10">
             <div className="flex flex-col justify-center items-center h-[790px] border border-gray-300 rounded-3xl">
-              <div className="flex flex-col items-center justify-center h-full sm:h-full -mt-32 sm:mt-0">
-                <img
-                  src={loadingGif}
-                  alt="loading"
-                  className="w-12 sm:w-16 h-12 sm:h-16"
-                />
-                <p className="text-sm sm:text-lg text-gray-600 mt-3 sm:mt-4">
-                  로딩 중...
-                </p>
-              </div>
+              <img src={loadingGif} alt="loading" className="w-16 h-16" />
+              <p className="text-lg text-gray-600 mt-4">로딩 중...</p>
             </div>
           </div>
         </div>
@@ -144,9 +136,7 @@ const Detail = () => {
         <div className="left-layout">
           <div className="px-0 pt-32 pb-10">
             <div className="flex justify-center items-center h-[790px] border border-gray-300 rounded-3xl">
-              <div className="flex flex-col items-center justify-center h-full sm:h-full -mt-32 sm:mt-0">
-                <p className="text-sm sm:text-lg text-red-500">{error}</p>
-              </div>
+              <p className="text-lg text-red-500">{error}</p>
             </div>
           </div>
         </div>
@@ -161,11 +151,7 @@ const Detail = () => {
         <div className="left-layout">
           <div className="px-0 pt-32 pb-10">
             <div className="flex justify-center items-center h-[790px] border border-gray-300 rounded-3xl">
-              <div className="flex flex-col items-center justify-center h-full sm:h-full -mt-32 sm:mt-0">
-                <p className="text-sm sm:text-lg text-gray-600">
-                  판례를 찾을 수 없습니다.
-                </p>
-              </div>
+              <p className="text-lg text-gray-600">판례를 찾을 수 없습니다.</p>
             </div>
           </div>
         </div>
@@ -197,7 +183,7 @@ const Detail = () => {
                   d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
                 />
               </svg>
-              <span className="text-sm sm:text-base">목록으로</span>
+              <span>목록으로</span>
             </button>
 
             <div className="border border-gray-300 rounded-3xl p-4 sm:p-8 w-full max-w-[900px] h-[790px] ">
@@ -243,8 +229,8 @@ const Detail = () => {
           </button>
 
           <div className="border border-gray-300 rounded-3xl p-4 sm:p-8 w-full max-w-[900px] h-[790px]">
-            <div className="relative flex flex-col sm:flex-row sm:justify-center sm:items-center mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-200 shadow-sm">
-              <h2 className="text-xl sm:text-3xl font-bold mb-2 sm:mb-0 text-center sm:text-left">
+            <div className="relative flex flex-col sm:flex-row sm:justify-center sm:items-center mb-6 pb-6 border-b border-gray-200 shadow-sm">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-0 text-center sm:text-left">
                 판례 상세
               </h2>
               <div className="sm:absolute sm:right-[20px] w-full sm:w-auto">
@@ -253,7 +239,7 @@ const Detail = () => {
                     setIsPopupOpen(true);
                     handleFetchSummary();
                   }}
-                  className="w-full sm:w-auto px-3 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base bg-Main text-white rounded-lg hover:bg-Main_hover transition-all"
+                  className="w-full sm:w-auto px-4 py-2 bg-Main text-white rounded-lg hover:bg-Main_hover transition-all"
                 >
                   요약보기
                 </button>
@@ -265,31 +251,31 @@ const Detail = () => {
               </div>
             </div>
 
-            <div className="h-[650px] p-3 sm:p-6 rounded-2xl overflow-y-auto">
-              <div className="space-y-3 sm:space-y-6">
-                <div className="flex flex-col sm:flex-row sm:items-start pb-3 sm:pb-4 border-b border-gray-100">
-                  <span className="w-full sm:w-24 text-sm sm:text-base font-bold mb-1 sm:mb-0">
+            <div className="h-[650px] p-4 sm:p-6 rounded-2xl overflow-y-auto">
+              <div className="space-y-4 sm:space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-start pb-4 border-b border-gray-100">
+                  <span className="w-full sm:w-24 font-bold mb-1 sm:mb-0">
                     법원명:
                   </span>
-                  <span className="sm:flex-1 text-sm sm:text-base">
+                  <span className="sm:flex-1">
                     {precedentDetail?.법원명 || "정보 없음"}
                   </span>
                 </div>
-                <div className="flex flex-col sm:flex-row sm:items-start pb-3 sm:pb-4 border-b border-gray-100">
-                  <span className="w-full sm:w-24 text-sm sm:text-base font-bold mb-1 sm:mb-0">
+                <div className="flex flex-col sm:flex-row sm:items-start pb-4 border-b border-gray-100">
+                  <span className="w-full sm:w-24 font-bold mb-1 sm:mb-0">
                     선고일자:
                   </span>
-                  <span className="sm:flex-1 text-sm sm:text-base">
+                  <span className="sm:flex-1">
                     {precedentDetail?.선고일자 || "정보 없음"}
                   </span>
                 </div>
                 <div className="flex flex-col">
-                  <span className="w-full sm:w-24 text-sm sm:text-base font-bold mb-1 sm:mb-0">
+                  <span className="w-full sm:w-24 font-bold mb-1 sm:mb-0">
                     판례내용:
                   </span>
-                  <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                  <div className="bg-gray-50 p-4 rounded-lg">
                     <span
-                      className="text-gray-800 leading-relaxed whitespace-pre-line text-xs sm:text-base"
+                      className="text-gray-800 leading-relaxed whitespace-pre-line text-sm sm:text-base"
                       dangerouslySetInnerHTML={{
                         __html: DOMPurify.sanitize(
                           (

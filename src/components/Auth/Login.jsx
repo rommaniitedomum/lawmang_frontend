@@ -54,18 +54,13 @@ const Login = () => {
       <div className="absolute inset-0 bg-[#e1e0df]" />
 
       {/* 로그인 폼 */}
-      <div className="bg-white/50 backdrop-blur-sm p-6 sm:p-12 rounded-lg w-[90%] sm:w-[500px] shadow-lg relative border-2 border-white/50 z-10">
-        <h2 className="text-2xl sm:text-4xl text-neutral-700 text-center mb-6 sm:mb-8">
-          로그인
-        </h2>
-        <form
-          className="space-y-6 sm:space-y-8 mt-8 sm:mt-16"
-          onSubmit={handleSubmit}
-        >
+      <div className="bg-white/50 backdrop-blur-sm p-12 rounded-lg w-[500px] shadow-lg relative border-2 border-white/50 z-10">
+        <h2 className="text-4xl text-neutral-700 text-center mb-8">로그인</h2>
+        <form className="space-y-8 mt-16" onSubmit={handleSubmit}>
           {/* 이메일 입력 */}
           <div className="relative">
-            <span className="absolute left-3 top-2.5 sm:top-3">
-              <AiOutlineMail className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+            <span className="absolute left-3 top-3">
+              <AiOutlineMail className="w-6 h-6 text-gray-400" />
             </span>
             <input
               type="email"
@@ -73,15 +68,15 @@ const Login = () => {
               placeholder="Email ID"
               value={credentials.email}
               onChange={handleChange}
-              className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 text-base sm:text-lg bg-transparent border-b-2 border-gray-400 focus:border-gray-600 outline-none placeholder-gray-400"
+              className="w-full pl-12 pr-4 py-3 text-lg bg-transparent border-b-2 border-gray-400 focus:border-gray-600 outline-none placeholder-gray-400"
               required
             />
           </div>
 
           {/* 비밀번호 입력 */}
           <div className="relative">
-            <span className="absolute left-3 top-2.5 sm:top-3">
-              <RiLockPasswordLine className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+            <span className="absolute left-3 top-3">
+              <RiLockPasswordLine className="w-6 h-6 text-gray-400" />
             </span>
             <input
               type="password"
@@ -89,13 +84,13 @@ const Login = () => {
               placeholder="Password"
               value={credentials.password}
               onChange={handleChange}
-              className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 text-base sm:text-lg bg-transparent border-b-2 border-gray-400 focus:border-gray-600 outline-none placeholder-gray-400"
+              className="w-full pl-12 pr-4 py-3 text-lg bg-transparent border-b-2 border-gray-400 focus:border-gray-600 outline-none placeholder-gray-400"
               required
             />
           </div>
 
           {/* 비밀번호 재설정/회원가입 링크 */}
-          <div className="text-center text-sm sm:text-base text-gray-600">
+          <div className="text-center text-gray-600">
             <Link
               to="/reset-password"
               className="hover:text-gray-800 hover:underline font-normal"
@@ -115,14 +110,14 @@ const Login = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-Main text-white py-3 sm:py-5 rounded-md hover:bg-Main_hover transition-colors text-base sm:text-lg"
+            className="w-full bg-Main text-white py-5 rounded-md hover:bg-Main_hover transition-colors text-lg"
           >
             {isLoading ? "로그인 중..." : "로그인"}
           </button>
 
           {/* 로그인 에러 메시지 표시 */}
           {error && (
-            <p className="text-red-500 text-center text-sm sm:text-base">
+            <p className="text-red-500 text-center">
               로그인 실패: {error.data?.detail || "서버 오류"}
             </p>
           )}

@@ -6,7 +6,7 @@ import {
   MdKeyboardArrowRight,
 } from "react-icons/md";
 import PreviewModal from "./PreviewModal";
-import HighlightText from "../HighlightText";
+import HighlightText from '../HighlightText';
 
 const DocumentSection = ({
   documents,
@@ -18,7 +18,7 @@ const DocumentSection = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredFiles, setFilteredFiles] = useState([]);
-  const [previewData, setPreviewData] = useState(null);
+  const [previewData, setPreviewData] = useState(null); 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const itemsPerPage = 10;
   const pageNumbersToShow = 5;
@@ -28,12 +28,13 @@ const DocumentSection = ({
     return filename.replace(/^\d+[-\s]*/, "");
   };
 
-  // ✅ 모든 파일을 하나의 배열로 합치는 함수 (useCallback 최적화)
-  const getAllFiles = useCallback(() => {
-    return Object.entries(documents).reduce((acc, [category, files]) => {
-      return acc.concat(files.map((file) => ({ category, file })));
-    }, []);
-  }, [documents]);
+    // ✅ 모든 파일을 하나의 배열로 합치는 함수 (useCallback 최적화)
+    const getAllFiles = useCallback(() => {
+      return Object.entries(documents).reduce((acc, [category, files]) => {
+        return acc.concat(files.map((file) => ({ category, file })));
+      }, []);
+    }, [documents]);
+
 
   // 파일 다운로드 핸들러
   const handleDownload = async (category, file) => {
@@ -87,14 +88,14 @@ const DocumentSection = ({
       console.error("미리보기 오류:", error);
       alert("미리보기 처리 중 오류가 발생했습니다.");
     }
-  };
+  }; 
 
   // ✅ 검색 실행 시 `filteredFiles` 업데이트
   useEffect(() => {
-    if (searchTrigger) {
-      if (searchQuery.trim()) {
+    if (searchTrigger) { 
+      if (searchQuery.trim()) { 
         const query = searchQuery.toLowerCase();
-        const files = getAllFiles().filter((fileInfo) =>
+        const files = getAllFiles().filter(fileInfo =>
           removeLeadingNumbers(fileInfo.file).toLowerCase().includes(query)
         );
         setFilteredFiles(files);
@@ -121,7 +122,7 @@ const DocumentSection = ({
   useEffect(() => {
     setSearchTrigger(false);
   }, [searchQuery, setSearchTrigger]);
-
+  
   const currentFiles = filteredFiles.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -180,21 +181,23 @@ const DocumentSection = ({
             {currentFiles.map((fileInfo, index) => (
               <div
                 key={index}
-                className="border border-gray-300 rounded-lg p-2 sm:p-3 transition-all duration-200 cursor-default"
+                className="border border-gray-300 rounded-lg p-4 transition-all duration-200 
+                         hover:border-gray-200 hover:shadow-md hover:bg-gray-50 
+                         hover:translate-x-1 cursor-pointer"
               >
-                <div className="flex justify-between items-center gap-2 sm:gap-4">
-                  <div className="flex items-center gap-2 sm:gap-3 min-w-0 flex-1">
+                <div className="flex justify-between items-center gap-4">
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
                     <span className="text-gray-600 flex-shrink-0">📄</span>
-                    <span className="text-sm sm:text-base truncate">
+                    <span className="text-lg truncate">
                       {renderTitle(removeLeadingNumbers(fileInfo.file))}
                     </span>
                   </div>
-                  <div className="flex gap-1 sm:gap-2 flex-shrink-0">
+                  <div className="flex gap-2 flex-shrink-0">
                     <button
                       onClick={() =>
                         handlePreview(fileInfo.category, fileInfo.file)
                       }
-                      className="px-2 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm border border-gray-300 rounded-lg w-[70px] sm:w-[90px]
+                      className="px-4 py-2 text-sm border border-gray-300 rounded-lg w-[90px]
                                hover:border-gray-300 hover:shadow-sm transform 
                                hover:-translate-y-0.5 transition-all duration-200"
                     >
@@ -204,7 +207,7 @@ const DocumentSection = ({
                       onClick={() =>
                         handleDownload(fileInfo.category, fileInfo.file)
                       }
-                      className="px-2 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm text-white bg-Main rounded-lg w-[70px] sm:w-[90px]
+                      className="px-4 py-2 text-sm text-white bg-Main rounded-lg w-[90px]
                                hover:bg-Main_hover hover:shadow-sm transform 
                                hover:-translate-y-0.5 transition-all duration-200"
                     >

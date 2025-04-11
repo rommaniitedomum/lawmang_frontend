@@ -44,7 +44,7 @@ const PreviewModal = ({ file, previewUrl, onClose }) => {
             />
           </svg>
         </button>
-        <h3 className="text-base sm:text-xl font-semibold mb-4">
+        <h3 className="text-xl font-semibold mb-4">
           {removeLeadingNumbers(file)}
         </h3>
         <iframe

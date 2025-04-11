@@ -44,7 +44,8 @@ const Main = () => {
     <div className="w-screen">
       <div className="h-screen">
         <div className="fixed w-full h-screen">
-          <div className="video_container w-screen h-screen absolute top-0 left-0 overflow-hidden z-0">
+          <div className="opacity-50 overlay w-full h-full bg-black left-0 top-0 z-10 absolute"></div>
+          <div className="video_container w-screen h-screen absolute top-0 left-0 overflow-hidden">
             <video
               ref={videoRef}
               src={mainVideo}
@@ -52,25 +53,19 @@ const Main = () => {
               autoPlay
               muted
               loop
-              playsInline
-              webkit-playsinline="true"
-              x5-playsinline="true"
               onLoadedMetadata={(e) => {
                 e.target.playbackRate = 0.7;
               }}
             ></video>
           </div>
-          <div className="opacity-50 overlay w-full h-full bg-black left-0 top-0 z-10 absolute"></div>
 
           {/* 메인 문구 */}
           <div className="fixed bottom-[125px] left-[50px] 2xl:left-[150px] z-20 text-white">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-6 md:mb-10">
+            <h1 className="text-6xl font-bold mb-10">
               법망 안의 새로운 시작
               <br />
             </h1>
-            <p className="text-2xl sm:text-2xl md:text-3xl text-gray-300">
-              당신의 법률 파트너, 로망
-            </p>
+            <p className="text-3xl text-gray-300">당신의 법률 파트너, 로망</p>
           </div>
 
           {/* 스크롤 유도 애니메이션 */}

@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="2xl:ml-[-130px] xl:ml-0 lg:ml-[50px] px-4">
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between md:mt-10 py-8">
             {/* 로고 섹션 */}
-            <div className="flex items-center mb-8 md:mb-0 mt-4 -ml-5 md:ml-10">
+            <div className="flex items-center mb-8 md:mb-0 mt-4 ml-10 md:ml-0">
               <img src={Logo} alt="로망 로고" className="h-16 md:h-20 w-auto" />
               <div className="ml-4">
                 <h2 className="text-2xl md:text-3xl font-basic font-['Oswald']">

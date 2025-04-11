@@ -13,12 +13,10 @@ const Report = () => {
         <div className="px-0 pt-[135px] pb-10">
           {/* 헤더 섹션 */}
           <div className="flex items-center gap-4 mb-8">
-            <TfiWrite className="text-4xl md:text-6xl text-Main mr-2" />
+            <TfiWrite className="text-6xl text-Main mr-2" />
             <div>
-              <h1 className="text-xl md:text-2xl font-medium cursor-default">
-                AI 리포트
-              </h1>
-              <p className="text-xs md:text-sm text-gray-500 mt-1">
+              <h1 className="text-2xl font-medium cursor-default">AI 리포트</h1>
+              <p className="text-sm text-gray-500 mt-1">
                 사용자의 답변을 바탕으로 AI가 법률 검토 보고서를 작성해드립니다.
               </p>
             </div>
@@ -29,7 +27,7 @@ const Report = () => {
             <button
               onClick={() => setActiveTab("legal")}
               disabled={isLoading}
-              className={`px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm sm:text-base transition-colors ${
+              className={`px-6 py-3 rounded-lg transition-colors ${
                 activeTab === "legal"
                   ? "bg-Main text-white"
                   : "bg-gray-100 hover:bg-gray-200"
@@ -40,7 +38,7 @@ const Report = () => {
             <button
               onClick={() => setActiveTab("tax")}
               disabled={isLoading}
-              className={`px-4 py-2 md:px-6 md:py-3 rounded-lg text-sm sm:text-base transition-colors ${
+              className={`px-6 py-3 rounded-lg transition-colors ${
                 activeTab === "tax"
                   ? "bg-Main text-white"
                   : "bg-gray-100 hover:bg-gray-200"

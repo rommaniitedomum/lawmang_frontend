@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import {
   useGetCurrentUserQuery,
   useUpdateUserMutation,
-  useCheckNicknameMutation,
+  useCheckNicknameQuery,
   useVerifyCurrentPasswordMutation,
   useDeleteUserMutation,
 } from "../../redux/slices/authApi";
@@ -12,7 +12,6 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { CiUser } from "react-icons/ci";
 import { useDispatch } from "react-redux";
 import { updateUserInfo } from "../../redux/slices/authSlice";
-import { logout } from "../../redux/slices/authSlice";
 
 const Modify = () => {
   const navigate = useNavigate();
@@ -38,8 +37,9 @@ const Modify = () => {
     confirmNewPassword: "",
   });
 
-  const [checkNickname] = useCheckNicknameMutation();
-
+  const { data: nicknameData } = useCheckNicknameQuery(formData.nickname, {
+    skip: !formData.nickname || formData.nickname === user?.nickname,
+  });
 
   const [currentPasswordVerified, setCurrentPasswordVerified] = useState(false);
   const [currentPasswordError, setCurrentPasswordError] = useState("");
@@ -102,29 +102,21 @@ const Modify = () => {
       setNicknameError("닉네임을 입력해주세요.");
       return;
     }
-  
+
     if (formData.nickname === user?.nickname) {
       setNicknameStatus(false);
-      setNicknameError("∙ 현재 사용중인 닉네임입니다.");
+      setNicknameError("∙ 이미 사용 중인 닉네임입니다.");
       return;
     }
-  
-    try {
-      const result = await checkNickname({ nickname: formData.nickname }).unwrap();
-      if (result?.available) {
-        setNicknameStatus(true);
-        setNicknameError("");
-      } else {
-        setNicknameStatus(false);
-        setNicknameError("∙ 이미 사용 중인 닉네임입니다.");
-      }
-    } catch (err) {
-      console.error("닉네임 중복 확인 오류:", err);
+
+    if (nicknameData) {
+      setNicknameStatus(true);
+      setNicknameError("");
+    } else {
       setNicknameStatus(false);
-      setNicknameError("∙ 닉네임 중복 확인 중 오류가 발생했습니다.");
+      setNicknameError("∙ 이미 사용 중인 닉네임입니다.");
     }
   };
-  
 
   const handleVerifyCurrentPassword = async () => {
     if (!formData.currentPassword) {
@@ -149,7 +141,8 @@ const Modify = () => {
 
     // 변경할 데이터가 있는지 확인
     const hasNicknameChange = formData.nickname !== user?.nickname;
-    const hasPasswordChange = formData.newPassword || formData.confirmNewPassword;
+    const hasPasswordChange =
+      formData.newPassword || formData.confirmNewPassword;
 
     // 아무 변경사항이 없는 경우
     if (!hasNicknameChange && !hasPasswordChange) {
@@ -171,49 +164,47 @@ const Modify = () => {
 
     // 비밀번호 변경 시 유효성 검사
     if (hasPasswordChange) {
+      // 새 비밀번호만 입력하고 확인은 안 한 경우
       if (!formData.newPassword || !formData.confirmNewPassword) {
         alert("새 비밀번호와 확인을 모두 입력해주세요.");
         return;
       }
 
+      // 비밀번호 유효성 검사
       if (!passwordChecks.length || !passwordChecks.special) {
         alert("비밀번호는 8자 이상이며 특수문자를 포함해야 합니다.");
         return;
       }
 
+      // 비밀번호 일치 여부 확인
       if (formData.newPassword !== formData.confirmNewPassword) {
         alert("새 비밀번호가 일치하지 않습니다.");
         return;
       }
     }
 
-    try {
-      const updateData = {};
-      if (hasNicknameChange) {
-        updateData.nickname = formData.nickname;
-      }
-      if (hasPasswordChange) {
-        updateData.currentPassword = formData.currentPassword;
-        updateData.newPassword = formData.newPassword;
-      }
+    // 변경할 데이터만 포함하여 전송
+    const updateData = {};
+    if (hasNicknameChange) {
+      updateData.nickname = formData.nickname;
+    }
+    if (hasPasswordChange) {
+      updateData.currentPassword = formData.currentPassword;
+      updateData.newPassword = formData.newPassword;
+    }
 
-      const result = await updateUser(updateData).unwrap();
-      
+    try {
+      await updateUser(updateData).unwrap();
+      // Redux store 업데이트
       if (updateData.nickname) {
         dispatch(updateUserInfo({ nickname: updateData.nickname }));
       }
 
       alert("회원정보가 성공적으로 수정되었습니다!");
-      navigate("/");
+      navigate("/mypage");
     } catch (err) {
       console.error("❌ 회원정보 수정 실패:", err);
-      if (err.status === 401) {
-        alert("인증이 만료되었습니다. 다시 로그인해주세요.");
-        dispatch(logout());
-        navigate("/login");
-      } else {
-        alert(err.data?.detail || "회원정보 수정 실패");
-      }
+      alert(err.data?.detail || "회원정보 수정 실패");
     }
   };
 
@@ -241,32 +232,29 @@ const Modify = () => {
     <div className="min-h-screen flex items-center justify-center relative">
       <div className="absolute inset-0 bg-[#e1e0df]" />
 
-      <div className="bg-white/50 backdrop-blur-sm p-6 sm:p-12 mt-[60px] sm:mt-[80px] rounded-lg w-[90%] sm:w-[600px] shadow-lg relative border-2 border-white/50 z-10">
-        <h2 className="text-2xl sm:text-4xl text-neutral-700 text-center mb-6 sm:mb-8">
+      <div className="bg-white/50 backdrop-blur-sm p-12 mt-[80px] rounded-lg w-[600px] shadow-lg relative border-2 border-white/50 z-10">
+        <h2 className="text-4xl text-neutral-700 text-center mb-8">
           회원정보 수정
         </h2>
 
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-6 sm:space-y-8 mt-8 sm:mt-16"
-        >
+        <form onSubmit={handleSubmit} className="space-y-8 mt-16">
           {/* 이메일 (수정 불가능) */}
           <div className="relative">
-            <span className="absolute left-3 top-3 sm:top-4">
-              <AiOutlineMail className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+            <span className="absolute left-3 top-4">
+              <AiOutlineMail className="w-6 h-6 text-gray-400" />
             </span>
             <input
               type="email"
               value={user?.email || ""}
-              className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 text-base sm:text-lg bg-transparent border-b-2 border-gray-400 outline-none text-gray-500"
+              className="w-full pl-12 pr-4 py-3 text-lg bg-transparent border-b-2 border-gray-400 outline-none text-gray-500"
               disabled
             />
           </div>
 
           {/* 닉네임 (수정 가능) */}
           <div className="relative">
-            <span className="absolute left-3 top-3 sm:top-4">
-              <CiUser className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+            <span className="absolute left-3 top-4">
+              <CiUser className="w-6 h-6 text-gray-400" />
             </span>
             <div className="flex">
               <input
@@ -275,13 +263,13 @@ const Modify = () => {
                 value={formData.nickname}
                 onChange={handleChange}
                 placeholder="닉네임"
-                className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 text-base sm:text-lg bg-transparent border-b-2 border-gray-400 focus:border-gray-600 outline-none placeholder-gray-400"
+                className="w-full pl-12 pr-4 py-3 text-lg bg-transparent border-b-2 border-gray-400 focus:border-gray-600 outline-none placeholder-gray-400"
                 required
               />
               <button
                 type="button"
                 onClick={handleCheckNickname}
-                className="ml-2 px-3 sm:px-4 py-1.5 sm:py-2 text-white rounded-md whitespace-nowrap w-[80px] sm:w-[100px] bg-Main hover:bg-Main_hover text-sm sm:text-base"
+                className="ml-2 px-4 py-2 text-white rounded-md whitespace-nowrap w-[100px] bg-Main hover:bg-Main_hover"
               >
                 중복 확인
               </button>
@@ -299,7 +287,7 @@ const Modify = () => {
           {/* 현재 비밀번호 입력 */}
           <div className="relative">
             <span className="absolute left-3 top-3">
-              <RiLockPasswordLine className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+              <RiLockPasswordLine className="w-6 h-6 text-gray-400" />
             </span>
             <div className="flex">
               <input
@@ -308,17 +296,17 @@ const Modify = () => {
                 value={formData.currentPassword}
                 onChange={handleChange}
                 placeholder="현재 비밀번호"
-                className="w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 text-base sm:text-lg bg-transparent border-b-2 border-gray-400 focus:border-gray-600 outline-none placeholder-gray-400"
+                className="w-full pl-12 pr-4 py-3 text-lg bg-transparent border-b-2 border-gray-400 focus:border-gray-600 outline-none placeholder-gray-400"
               />
               <button
                 type="button"
                 onClick={handleVerifyCurrentPassword}
                 disabled={currentPasswordVerified}
-                className={`ml-2 px-3 sm:px-4 py-1.5 sm:py-2 text-white rounded-md whitespace-nowrap w-[80px] sm:w-[100px] ${
+                className={`ml-2 px-4 py-2 text-white rounded-md whitespace-nowrap w-[100px] ${
                   currentPasswordVerified
                     ? "bg-green-500"
                     : "bg-Main hover:bg-Main_hover"
-                } text-sm sm:text-base`}
+                }`}
               >
                 {currentPasswordVerified ? "확인 완료" : "확인"}
               </button>
@@ -336,7 +324,7 @@ const Modify = () => {
           {/* 새 비밀번호 입력 (선택사항) */}
           <div className="relative">
             <span className="absolute left-3 top-3">
-              <RiLockPasswordLine className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+              <RiLockPasswordLine className="w-6 h-6 text-gray-400" />
             </span>
             <input
               name="newPassword"
@@ -344,7 +332,7 @@ const Modify = () => {
               value={formData.newPassword}
               onChange={handleChange}
               placeholder="새 비밀번호"
-              className={`w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 text-base sm:text-lg bg-transparent border-b-2 
+              className={`w-full pl-12 pr-4 py-3 text-lg bg-transparent border-b-2 
                 ${
                   !currentPasswordVerified
                     ? "border-gray-300 text-gray-400"
@@ -384,7 +372,7 @@ const Modify = () => {
           {/* 새 비밀번호 확인 */}
           <div className="relative">
             <span className="absolute left-3 top-3">
-              <RiLockPasswordLine className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+              <RiLockPasswordLine className="w-6 h-6 text-gray-400" />
             </span>
             <input
               name="confirmNewPassword"
@@ -392,7 +380,7 @@ const Modify = () => {
               value={formData.confirmNewPassword}
               onChange={handleChange}
               placeholder="새 비밀번호 확인"
-              className={`w-full pl-10 sm:pl-12 pr-4 py-2 sm:py-3 text-base sm:text-lg bg-transparent border-b-2 
+              className={`w-full pl-12 pr-4 py-3 text-lg bg-transparent border-b-2 
                 ${
                   !currentPasswordVerified
                     ? "border-gray-300 text-gray-400"
@@ -421,7 +409,7 @@ const Modify = () => {
             <button
               type="submit"
               disabled={isUpdating}
-              className="w-full bg-Main text-white py-3 sm:py-5 rounded-md hover:bg-Main_hover transition-colors text-base sm:text-lg"
+              className="w-full bg-Main text-white py-5 rounded-md hover:bg-Main_hover transition-colors text-lg"
             >
               {isUpdating ? "수정 중..." : "회원정보 수정하기"}
             </button>

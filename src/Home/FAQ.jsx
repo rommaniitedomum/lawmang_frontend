@@ -58,16 +58,16 @@ const FAQ = () => {
       <div className="left-layout">
         <div className="2xl:ml-[-130px] xl:ml-0 lg:ml-[50px]">
           <div className="flex items-center gap-4 ml-[10px]">
-            <GrCircleQuestion className="text-4xl sm:text-6xl text-black" />
-            <p className="text-xl sm:text-2xl font-medium">자주 묻는 질문</p>
+            <GrCircleQuestion className="text-6xl text-black" />
+            <p className="text-2xl font-medium">자주 묻는 질문</p>
           </div>
 
-          <div className="mt-6 sm:mt-10">
-            <div className="w-[90%] border-t border-b border-gray-200 mb-6 sm:mb-10 ml-[10px]">
+          <div className="mt-10">
+            <div className="w-[90%] border-t border-b border-gray-200 mb-10 ml-[10px]">
               {displayedFAQs.map((faq, index) => (
                 <div
                   key={index}
-                  className={`border-b border-gray-200 last:border-b-0 py-1 sm:py-2
+                  className={`border-b border-gray-200 last:border-b-0 py-2
                     transition-all duration-700 transform
                     ${
                       isVisible
@@ -79,7 +79,7 @@ const FAQ = () => {
                   }}
                 >
                   <button
-                    className={`w-full py-3 sm:py-4 flex justify-between items-center text-left 
+                    className={`w-full py-4 flex justify-between items-center text-left 
                                 relative group transition-all duration-300
                                 hover:pl-4 hover:bg-gray-50 rounded-lg
                                 ${
@@ -88,7 +88,7 @@ const FAQ = () => {
                     onClick={() => toggleAnswer(index)}
                   >
                     <span
-                      className="text-base sm:text-lg font-medium text-black
+                      className="text-lg font-medium text-black
                                     transition-colors duration-300 flex items-center gap-2"
                     >
                       <span
@@ -104,17 +104,17 @@ const FAQ = () => {
                       {faq.question}
                     </span>
                     <IoIosArrowDown
-                      className={`transform transition-all duration-300 mr-4 w-5 h-5 sm:w-6 sm:h-6
+                      className={`transform transition-all duration-300 mr-4 
                                   ${openIndex === index ? "rotate-180" : ""}`}
                     />
                   </button>
                   <div
                     className={`overflow-hidden transition-all duration-300 ${
-                      openIndex === index ? "max-h-40 pb-3 sm:pb-4" : "max-h-0"
+                      openIndex === index ? "max-h-40 pb-4" : "max-h-0"
                     }`}
                   >
-                    <p className="text-gray-600 ml-4 flex items-start gap-2 text-sm sm:text-base">
-                      <HiArrowTurnDownRight className="text-Main flex-shrink-0 mt-1 w-4 h-4 sm:w-5 sm:h-5" />
+                    <p className="text-gray-600 ml-4 flex items-start gap-2">
+                      <HiArrowTurnDownRight className="text-Main flex-shrink-0 mt-1" />
                       <span>{faq.answer}</span>
                     </p>
                   </div>
@@ -136,7 +136,7 @@ const FAQ = () => {
               {[...Array(totalPages).keys()].map((num) => (
                 <button
                   key={num + 1}
-                  className={`px-2 sm:px-3 py-1 border rounded-md text-sm sm:text-base ${
+                  className={`px-3 py-1 border rounded-md ${
                     currentPage === num + 1
                       ? "bg-gray-500 text-white hover:bg-gray-500"
                       : "bg-white text-gray-700 hover:bg-gray-50"

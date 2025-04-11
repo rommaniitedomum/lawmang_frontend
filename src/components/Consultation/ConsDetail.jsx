@@ -130,11 +130,11 @@ const ConsDetail = () => {
   return (
     <div className="container min-h-screen">
       <div className="left-layout">
-        <div className="px-0 pt-[100px] sm:pt-[120px] pb-6 sm:pb-10">
+        <div className="px-0 pt-[120px] pb-10">
           {/* 뒤로가기 버튼 수정 */}
           <button
             onClick={handleGoBack}
-            className="flex items-center gap-1 sm:gap-2 mb-3 sm:mb-4 px-2 sm:px-3 py-1.5 sm:py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+            className="flex items-center gap-2 mb-4 px-3 py-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -142,7 +142,7 @@ const ConsDetail = () => {
               viewBox="0 0 24 24"
               strokeWidth={2}
               stroke="currentColor"
-              className="w-4 h-4 sm:w-5 sm:h-5"
+              className="w-5 h-5"
             >
               <path
                 strokeLinecap="round"
@@ -150,63 +150,59 @@ const ConsDetail = () => {
                 d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
               />
             </svg>
-            <span className="text-sm sm:text-base">목록으로</span>
+            <span>목록으로</span>
           </button>
 
           {/* 상단 정보 영역 */}
-          <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
+          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
             {/* 구분 */}
-            <div className="flex border-b border-gray-100 pb-3 sm:pb-4 mb-3 sm:mb-4">
-              <span className="text-xs sm:text-sm text-gray-500 w-16 sm:w-20">
-                구분
-              </span>
-              <span className="text-xs sm:text-sm text-black">
+            <div className="flex border-b border-gray-100 pb-4 mb-4">
+              <span className="text-sm text-gray-500 w-20">구분</span>
+              <span className="text-sm text-black">
                 {consultation.category}
               </span>
             </div>
 
             {/* 제목 */}
             <div className="flex">
-              <span className="text-xs sm:text-sm text-gray-500 w-16 sm:w-20">
-                제목
-              </span>
-              <span className="text-xs sm:text-sm text-black font-medium">
+              <span className="text-sm text-gray-500 w-20">제목</span>
+              <span className="text-sm text-black font-medium">
                 {consultation.title}
               </span>
             </div>
           </div>
 
           {/* 질문 영역 */}
-          <div className="bg-gray-50 rounded-lg border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
-            <div className="flex items-center mb-3 sm:mb-4">
-              <div className="flex items-center text-sm sm:text-base font-semibold text-gray-900">
-                <TbCircleLetterQFilled className="w-6 h-6 sm:w-8 sm:h-8 mr-1.5 sm:mr-2 text-black text-xl sm:text-2xl" />
+          <div className="bg-gray-50 rounded-lg border border-gray-200 p-6 mb-6">
+            <div className="flex items-center mb-4">
+              <div className="flex items-center text-base font-semibold text-gray-900">
+                <TbCircleLetterQFilled className="w-8 h-8 mr-2 text-black text-2xl" />
                 질문
               </div>
-              <div className="text-xs sm:text-sm text-gray-500 ml-1.5 sm:ml-2">
+              <div className="text-sm text-gray-500 ml-2">
                 {consultation.date}
               </div>
             </div>
-            <div className="whitespace-pre-wrap text-xs sm:text-sm leading-6 sm:leading-7 text-gray-700">
+            <div className="whitespace-pre-wrap text-sm leading-7 text-gray-700">
               {consultation.question}
             </div>
           </div>
 
           {/* 답변 영역 */}
-          <div className="bg-white rounded-lg border border-gray-200 p-4 sm:p-6 mb-4 sm:mb-6">
-            <div className="flex items-center text-sm sm:text-base font-semibold text-gray-900 mb-3 sm:mb-4">
-              <TbCircleLetterA className="w-6 h-6 sm:w-8 sm:h-8 mr-1.5 sm:mr-2 text-black text-xl sm:text-2xl" />
+          <div className="bg-white rounded-lg border border-gray-200 p-6 mb-6">
+            <div className="flex items-center text-base font-semibold text-gray-900 mb-4">
+              <TbCircleLetterA className="w-8 h-8 mr-2 text-black text-2xl" />
               답변
             </div>
-            <div className="whitespace-pre-wrap text-xs sm:text-sm leading-6 sm:leading-7 text-gray-700">
+            <div className="whitespace-pre-wrap text-sm leading-7 text-gray-700">
               {consultation.answer}
             </div>
           </div>
 
           {/* 공공누리 유형 */}
-          <div className="mt-6 sm:mt-8 flex items-center gap-1.5 sm:gap-2">
-            <img src={openLicenseImg} alt="공공누리" className="h-5 sm:h-6" />
-            <span className="text-xs sm:text-sm text-gray-500">
+          <div className="mt-8 flex items-center gap-2">
+            <img src={openLicenseImg} alt="공공누리" className="h-6" />
+            <span className="text-sm text-gray-500">
               대한법률구조공단의 해당 저작물은 "공공누리 4유형(출처표시)" 조건에
               따라 누구나 이용할 수 있습니다.
             </span>

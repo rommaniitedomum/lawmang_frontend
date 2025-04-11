@@ -36,10 +36,10 @@ const MemoDetail = ({ isOpen, memo, onClose }) => {
         <div className="absolute inset-0 backdrop-blur-sm"></div>
       </div>
       <div className="container mx-auto relative z-[60]">
-        <div className="left-layout bg-[#f7f6f4] rounded-xl sm:w-[900px] w-[95%] sm:h-[820px] h-[600px] sm:p-8 p-4 sm:mt-[65px] mt-[40px] sm:border sm:border-gray-300 border-0 pointer-events-auto">
+        <div className="left-layout bg-[#f7f6f4]  rounded-xl w-[900px] h-[820px] p-8 border border-gray-300 mt-[65px] pointer-events-auto">
           {/* 상단 제목과 버튼 */}
-          <div className="relative flex justify-end mb-16">
-            <h2 className="absolute left-1/2 sm:top-6 top-10 -translate-x-1/2 -translate-y-1/2 sm:text-2xl text-xl font-bold">
+          <div className="relative flex justify-end mb-20">
+            <h2 className="absolute left-1/2 top-10 -translate-x-1/2 -translate-y-1/2 text-2xl font-bold">
               메모 상세보기
             </h2>
           </div>
@@ -52,10 +52,10 @@ const MemoDetail = ({ isOpen, memo, onClose }) => {
             {memo.notification && memo.event_date && (
               <div className="flex items-center gap-2">
                 <div className="flex items-center">
-                  <span className="sm:text-sm text-xs font-medium text-gray-700 cursor-default">
+                  <span className="text-sm font-medium text-gray-700 cursor-default">
                     알림 설정일:
                   </span>
-                  <span className="ml-2 sm:text-sm text-xs text-gray-700 cursor-default">
+                  <span className="ml-2 text-sm text-gray-700 cursor-default">
                     {new Date(memo.event_date).toLocaleDateString()}
                   </span>
                 </div>
@@ -64,31 +64,27 @@ const MemoDetail = ({ isOpen, memo, onClose }) => {
           </div>
 
           {/* 메모 내용 영역 */}
-          <div className="sm:h-[600px] h-[400px]">
+          <div className="h-[600px]">
             {/* 제목 영역 */}
             <div className="mb-4">
-              <label className="block sm:text-lg text-base font-semibold mb-2">
-                제목
-              </label>
-              <div className="w-full sm:p-3 p-2 border-b-2 border-gray-300 sm:text-lg text-base bg-transparent">
+              <label className="block text-lg font-semibold mb-2">제목</label>
+              <div className="w-full p-3 border-b-2 border-gray-300 text-lg bg-transparent">
                 {memo.title}
               </div>
             </div>
 
             {/* 내용 영역 */}
             <div>
-              <label className="block sm:text-lg text-base font-semibold mb-2">
-                내용
-              </label>
-              <div className="w-full sm:h-[400px] h-[280px] sm:p-6 p-3 border-2 border-gray-300 rounded-lg sm:text-lg text-base bg-transparent whitespace-pre-wrap overflow-y-auto break-words">
+              <label className="block text-lg font-semibold mb-2">내용</label>
+              <div className="w-full h-[450px] p-6 border-2 border-gray-300 rounded-lg text-lg bg-transparent whitespace-pre-wrap overflow-y-auto break-words">
                 {memo.content}
               </div>
             </div>
 
-            <div className="flex justify-center gap-5 sm:mt-[25px] mt-[15px]">
+            <div className="flex justify-center gap-5 mt-[25px]">
               <button
                 onClick={onClose}
-                className="sm:px-6 px-4 sm:py-3 py-2 sm:text-base text-sm bg-Main text-white rounded-lg border border-gray-300 hover:bg-Main_hover"
+                className="px-6 py-3 bg-Main text-white rounded-lg border border-gray-300 hover:bg-Main_hover"
               >
                 닫기
               </button>

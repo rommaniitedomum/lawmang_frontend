@@ -108,35 +108,35 @@ const MemoBoard = () => {
 
   return (
     <div className="border border-gray-300 rounded-lg overflow-hidden bg-[#f5f4f2]">
-      <div className="border-b border-gray-300 p-1 sm:p-2 flex items-center bg-[#a7a28f]">
-        <div className="flex items-center gap-1 sm:gap-4 ml-1 sm:ml-4">
+      <div className="border-b border-gray-300 p-2 flex items-center bg-[#a7a28f]">
+        <div className="flex items-center gap-2 sm:gap-4 ml-2 sm:ml-4">
           <button
             onClick={() =>
               setSortOrder(sortOrder === "latest" ? "oldest" : "latest")
             }
-            className="flex items-center gap-1 sm:gap-2 px-1.5 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-sm text-white opacity-80 hover:opacity-100 transition-all"
+            className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 text-xs sm:text-sm text-white opacity-80 hover:opacity-100 transition-all"
           >
             <FaExchangeAlt
-              className={`w-3 h-3 sm:w-auto transition-transform duration-300 ${
+              className={`transition-transform duration-300 ${
                 sortOrder === "oldest" ? "rotate-180" : ""
               }`}
             />
-            <span className="font-medium w-[40px] sm:w-[50px]">
+            <span className="font-medium w-[50px] sm:w-[60px]">
               {sortOrder === "latest" ? "최신순" : "오래된순"}
             </span>
           </button>
         </div>
 
-        <h2 className="font-medium text-white text-center flex-1 text-xs sm:text-sm ml-2 sm:ml-4">
+        <h2 className="font-medium text-white text-center flex-1 text-sm sm:text-base ml-4">
           메모장
         </h2>
 
-        <div className="flex items-center gap-1 sm:gap-4 ml-auto">
+        <div className="flex items-center gap-2 sm:gap-4 ml-auto">
           {/* 기록/알림 토글 버튼 */}
           <div className="flex bg-white rounded-lg overflow-hidden">
             <button
               onClick={() => setViewMode("recent")}
-              className={`px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs font-medium transition-colors ${
+              className={`px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium transition-colors ${
                 viewMode === "recent"
                   ? "bg-[#8b7b6e] text-white"
                   : "bg-white text-gray-600 hover:bg-gray-100"
@@ -146,7 +146,7 @@ const MemoBoard = () => {
             </button>
             <button
               onClick={() => setViewMode("notification")}
-              className={`px-2 sm:px-3 py-1 sm:py-1.5 text-[10px] sm:text-xs font-medium transition-colors ${
+              className={`px-3 sm:px-4 py-1.5 text-xs sm:text-sm font-medium transition-colors ${
                 viewMode === "notification"
                   ? "bg-[#8b7b6e] text-white"
                   : "bg-white text-gray-600 hover:bg-gray-100"
@@ -158,25 +158,25 @@ const MemoBoard = () => {
           {/* 메모 추가 버튼 */}
           <button
             onClick={handleAddMemo}
-            className="px-2 sm:px-3 py-1 sm:py-1.5 bg-gray-100 text-black text-[10px] sm:text-xs rounded-md hover:bg-gray-200 transition-colors mr-1 sm:mr-0"
+            className="px-3 sm:px-4 py-1.5 bg-gray-100 text-black text-xs sm:text-sm rounded-md hover:bg-gray-200 transition-colors"
           >
             메모 추가
           </button>
         </div>
       </div>
 
-      <div className="h-[350px] sm:h-[400px] p-2 sm:p-4 overflow-y-auto">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
+      <div className="h-[400px] p-4 overflow-y-auto">
+        <div className="grid grid-cols-3 gap-6">
           {isLoading ? (
-            <div className="col-span-4 text-center text-gray-500 mt-[120px] sm:mt-[150px] text-[10px] sm:text-base">
+            <div className="col-span-4 text-center text-gray-500 mt-[150px]">
               로딩 중...
             </div>
           ) : error ? (
-            <div className="col-span-4 text-center text-red-500 mt-[120px] sm:mt-[150px] text-[10px] sm:text-base">
+            <div className="col-span-4 text-center text-red-500 mt-[150px]">
               오류 발생: {error.message}
             </div>
           ) : filteredMemos.length === 0 ? (
-            <div className="col-span-4 text-center text-gray-500 mt-[120px] sm:mt-[160px] text-[10px] sm:text-base">
+            <div className="col-span-4 text-center text-gray-500 mt-[160px]">
               작성한 메모가 없습니다.
             </div>
           ) : (
@@ -186,56 +186,56 @@ const MemoBoard = () => {
                 onClick={() => handleMemoClick(memo)}
                 className={`group relative ${
                   memo.notification ? "bg-[#ffb9a3]" : "bg-[#f3d984]"
-                } border-b-4 border-r-4 border-gray-300 rounded-sm h-[130px] sm:h-[170px] transform rotate-[-1deg] hover:rotate-0 transition-all duration-200 hover:shadow-md cursor-pointer`}
+                } border-b-4 border-r-4 border-gray-300 rounded-sm h-[170px] transform rotate-[-1deg] hover:rotate-0 transition-all duration-200 hover:shadow-md cursor-pointer`}
                 style={{ boxShadow: "1px 1px 3px rgba(0,0,0,0.1)" }}
               >
                 {/* 알림 아이콘 추가 */}
-                <div className="absolute top-1 right-1 p-1 sm:p-1.5 text-[#8b7b6e]">
+                <div className="absolute top-1 right-1 p-1.5 text-[#8b7b6e]">
                   {memo.notification ? (
-                    <FaBell className="w-3 h-3 sm:size-[16px]" />
+                    <FaBell size={16} />
                   ) : (
-                    <FaRegBell className="w-3 h-3 sm:size-[16px]" />
+                    <FaRegBell size={16} />
                   )}
                 </div>
 
                 {/* 메모 핀 장식 */}
-                <div className="absolute -top-2 sm:-top-3 left-1/2 transform -translate-x-1/2 w-4 h-4 sm:w-6 sm:h-6 bg-[#bd0000] rounded-full shadow-md z-10">
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#9d0000] rounded-full"></div>
+                <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-6 h-6 bg-[#bd0000] rounded-full shadow-md z-10">
+                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#9d0000] rounded-full"></div>
                 </div>
 
-                <div className="h-full flex flex-col p-2 sm:p-4 pt-1 sm:pt-2">
-                  <div className="text-[10px] sm:text-[13px] text-[#828282] font-thin mb-1 sm:mb-2">
+                <div className="h-full flex flex-col p-4 pt-2">
+                  <div className="text-[13px] text-[#828282] font-thin mb-2">
                     {new Date(memo.created_at).toLocaleDateString()}
                   </div>
 
-                  <h3 className="font-bold text-[#5d4d40] mb-1 sm:mb-2 text-xs sm:text-[17px] leading-[1.4] sm:leading-[1.4]">
+                  <h3 className="font-bold text-[#5d4d40] mb-2 text-md">
                     {memo.title}
                   </h3>
-                  <div className="flex-1 text-[10px] sm:text-xs text-[#5d4d40] line-clamp-2 overflow-hidden max-h-[3.2em] sm:max-h-[2.6em]">
+                  <div className="flex-1 text-xs text-[#5d4d40] line-clamp-2 overflow-hidden max-h-[2.6em]">
                     {memo.content}
                   </div>
 
                   {/* 알림 설정 날짜 추가 */}
                   {memo.notification && memo.event_date && (
-                    <div className="absolute bottom-1 sm:bottom-2 left-2 sm:left-4 text-[10px] sm:text-[13px] text-[#828282] font-thin">
+                    <div className="absolute bottom-2 left-4 text-[13px] text-[#828282] font-thin">
                       알림: {new Date(memo.event_date).toLocaleDateString()}
                     </div>
                   )}
 
                   {/* 버튼 그룹 */}
-                  <div className="sm:opacity-0 sm:group-hover:opacity-100 absolute bottom-1 right-1 sm:right-2 flex items-center gap-1 sm:gap-2">
+                  <div className="opacity-0 group-hover:opacity-100 absolute bottom-1 right-2 flex items-center gap-2">
                     <button
                       onClick={(e) => handleEditMemo(e, memo)}
-                      className="p-1 sm:p-1.5 text-[#8b7b6e] hover:text-[#5d4d40] rounded-full hover:bg-[#ffe4b8] transition-all duration-200"
+                      className="p-1.5 text-[#8b7b6e] hover:text-[#5d4d40] rounded-full hover:bg-[#ffe4b8] transition-all duration-200"
                     >
-                      <FiEdit2 className="w-3 h-3 sm:size-[16px]" />
+                      <FiEdit2 size={16} />
                     </button>
                     <button
                       onClick={(e) => handleDeleteClick(e, memo)}
-                      className="p-1 sm:p-1.5 text-red-400 hover:text-red-500 rounded-full hover:bg-[#ffe4b8] transition-all duration-200"
+                      className="p-1.5 text-red-400 hover:text-red-500 rounded-full hover:bg-[#ffe4b8] transition-all duration-200"
                     >
                       <svg
-                        className="w-3 h-3 sm:w-5 sm:h-5"
+                        className="w-5 h-5"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"

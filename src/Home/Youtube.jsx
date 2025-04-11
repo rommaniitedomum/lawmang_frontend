@@ -10,7 +10,7 @@ const Youtube = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const videosPerPage = window.innerWidth < 640 ? 2 : 4; // 모바일에서는 2개, 그 외에서는 4개
+  const videosPerPage = 4;
   const [autoPlay, setAutoPlay] = useState(true);
 
   // 애니메이션을 위한 state와 ref 추가
@@ -40,20 +40,6 @@ const Youtube = () => {
       }
     };
   }, []);
-
-  // 화면 크기 변경 감지
-  useEffect(() => {
-    const handleResize = () => {
-      setCurrentPage(1); // 화면 크기 변경시 첫 페이지로
-      const newVideosPerPage = window.innerWidth < 640 ? 2 : 4;
-      if (videosPerPage !== newVideosPerPage) {
-        window.location.reload();
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, [videosPerPage]);
 
   useEffect(() => {
     const lastRequestTime = localStorage.getItem("lastRequestTime");
@@ -167,8 +153,8 @@ const Youtube = () => {
       <div className="left-layout">
         <div className="2xl:ml-[-130px] xl:ml-0 lg:ml-[50px]">
           <div className="flex items-center gap-4 ml-[10px]">
-            <ImYoutube2 className="text-7xl sm:text-9xl text-red-500" />
-            <p className="text-xl sm:text-2xl font-medium">법률 관련 유튜브</p>
+            <ImYoutube2 className="text-9xl text-red-500" />
+            <p className="text-2xl font-medium">법률 관련 유튜브</p>
           </div>
 
           {error && <div className="text-red-500 p-4 text-center">{error}</div>}
@@ -176,14 +162,14 @@ const Youtube = () => {
 
           {/* ✅ FAQ, CardList와 동일한 2열 레이아웃 유지 */}
           <ul
-            className="grid grid-cols-1 sm:grid-cols-2 gap-4 justify-items-start w-[90%] lg:w-[95%] xl:w-[90%] ml-[10px]"
+            className="grid grid-cols-2 gap-4 justify-items-start w-[90%] lg:w-[95%] xl:w-[90%] ml-[10px]"
             onMouseEnter={() => setAutoPlay(false)}
             onMouseLeave={() => setAutoPlay(true)}
           >
             {currentVideos.map((video) => (
               <li
                 key={video.id.videoId || video.id}
-                className="rounded-lg p-2 sm:p-3 w-full max-w-[600px]"
+                className="rounded-lg p-3 w-full max-w-[600px]"
               >
                 <div className="w-full overflow-hidden relative shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl group">
                   <a
@@ -198,16 +184,16 @@ const Youtube = () => {
                       <img
                         src={video.snippet.thumbnails.medium.url}
                         alt={video.snippet.title}
-                        className="w-full h-[150px] sm:h-[200px] object-cover transition-all duration-300"
+                        className="w-full h-[200px] object-cover transition-all duration-300"
                       />
                       <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-40 transition-opacity duration-300"></div>
                       <div className="absolute inset-0 flex items-center justify-center">
-                        <FaYoutube className="text-white text-4xl sm:text-5xl transform scale-0 group-hover:scale-100 transition-transform duration-300" />
+                        <FaYoutube className="text-white text-5xl transform scale-0 group-hover:scale-100 transition-transform duration-300" />
                       </div>
                     </div>
 
-                    <div className="h-[60px] sm:h-[80px] p-2 sm:p-3 bg-white">
-                      <h3 className="text-base sm:text-lg font-medium text-gray-900 line-clamp-2 group-hover:text-Main transition-colors duration-300">
+                    <div className="h-[80px] p-3 bg-white">
+                      <h3 className="text-lg font-medium text-gray-900 line-clamp-2 group-hover:text-Main transition-colors duration-300">
                         {he.decode(video.snippet.title)}
                       </h3>
                     </div>
